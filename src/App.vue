@@ -47,7 +47,7 @@
 
 <script>
 import products from './data/products';
-import ProductList from './components/ProductList.vue';
+import ProductList from './components/ProductList/ProductList.vue';
 
 export default {
   name: 'App',
@@ -59,8 +59,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-// #app {
-// }
-</style>
