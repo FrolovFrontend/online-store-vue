@@ -1,61 +1,36 @@
 <template>
   <section class="catalog">
-    <ProductList :products="products" />
-    <ul class="catalog__pagination pagination">
-      <li class="pagination__item">
-        <a
-          class="pagination__link pagination__link--arrow pagination__link--disabled"
-          aria-label="Предыдущая страница"
-        >
-          <svg width="8" height="14" fill="currentColor">
-            <use xlink:href="#icon-arrow-left" />
-          </svg>
-        </a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link pagination__link--current">1</a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link" href="#">2</a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link" href="#">3</a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link" href="#">4</a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link" href="#">...</a>
-      </li>
-      <li class="pagination__item">
-        <a class="pagination__link" href="#">10</a>
-      </li>
-      <li class="pagination__item">
-        <a
-          class="pagination__link pagination__link--arrow"
-          href="#"
-          aria-label="Следующая страница"
-        >
-          <svg width="8" height="14" fill="currentColor">
-            <use xlink:href="#icon-arrow-right" />
-          </svg>
-        </a>
-      </li>
-    </ul>
+    <product-list :products="products" />
+    <base-pagination
+      v-model="page"
+      :count="countProducts"
+      :per-page="productsPerPage"
+    />
   </section>
 </template>
 
 <script>
 import products from './data/products';
 import ProductList from './components/ProductList/ProductList.vue';
+import BasePagination from './components/BasePagination.vue';
 
 export default {
   name: 'App',
-  components: { ProductList },
+  components: { ProductList, BasePagination },
   data() {
     return {
-      products,
+      page: 1,
+      productsPerPage: 6,
     };
+  },
+  computed: {
+    products() {
+      const offset = (this.page - 1) * this.productsPerPage;
+      return products.slice(offset, offset + this.productsPerPage);
+    },
+    countProducts() {
+      return products.length;
+    },
   },
 };
 </script>
