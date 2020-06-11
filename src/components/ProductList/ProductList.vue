@@ -1,6 +1,10 @@
 <template>
   <ul class="catalog__list">
-    <ProductItem :product-item="product" v-for="(product, index) in products" :key="index" />
+    <product-item
+      :product-item="product"
+      v-for="product in products"
+      :key="product.id"
+    />
   </ul>
 </template>
 
