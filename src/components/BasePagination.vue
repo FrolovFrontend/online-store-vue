@@ -1,31 +1,40 @@
 <template>
   <ul class="catalog__pagination pagination">
     <li class="pagination__item">
-      <a
-        class="pagination__link pagination__link--arrow pagination__link--disabled"
+      <button
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': page === 1 }"
+        :disabled="page === 1"
         aria-label="Предыдущая страница"
+        @click.prevent="paginate(page - 1)"
       >
-        <svg width="8" height="14" fill="currentColor">
+      <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left" />
         </svg>
-      </a>
+      </button>
     </li>
     <li class="pagination__item" v-for="pageNumber in pages" :key="pageNumber">
       <a
         href="#"
         class="pagination__link"
-        :class="{'pagination__link--current' : pageNumber === page}"
+        :class="{ 'pagination__link--current': pageNumber === page }"
         @click.prevent="paginate(pageNumber)"
       >
         {{ pageNumber }}
       </a>
     </li>
     <li class="pagination__item">
-      <a class="pagination__link pagination__link--arrow" href="#" aria-label="Следующая страница">
+      <button
+        class="pagination__link pagination__link--arrow"
+        :class="{ 'pagination__link--disabled': page === pages }"
+        :disabled="page === pages"
+        aria-label="Следующая страница"
+        @click.prevent="paginate(page + 1)"
+      >
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right" />
         </svg>
-      </a>
+      </button>
     </li>
   </ul>
 </template>
@@ -53,3 +62,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+  button {
+    background-color: transparent;
+    outline: none;
+    cursor: pointer;
+    &:hover {
+      opacity: .6;
+    }
+  }
+</style>
