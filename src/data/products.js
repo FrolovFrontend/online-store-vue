@@ -5,6 +5,23 @@ export default [
     title: 'Радионяня Motorola MBP16',
     price: 3690,
     image: '/img/radio.jpg',
+    colors: [
+      {
+        id: 1,
+        name: 'blue',
+        value: '#73B6EA',
+      },
+      {
+        id: 2,
+        name: 'yellow',
+        value: '#FFBE15',
+      },
+      {
+        id: 3,
+        name: 'gray',
+        value: '#939393',
+      },
+    ],
   },
   {
     id: 2,
@@ -12,6 +29,18 @@ export default [
     title: 'Ультразвуковая зубная щётка Playbrush Smart Sonic',
     price: 5660,
     image: '/img/toothbrush.jpg',
+    colors: [
+      {
+        id: 3,
+        name: 'gray',
+        value: '#939393',
+      },
+      {
+        id: 6,
+        name: 'white',
+        value: '#FFF',
+      },
+    ],
   },
   {
     id: 3,

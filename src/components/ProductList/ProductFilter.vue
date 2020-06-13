@@ -3,6 +3,7 @@
     <h2 class="filter__title">Фильтры</h2>
 
     <form class="filter__form form" action="#" method="get" @submit.prevent="submit">
+      <!-- Цена -->
       <fieldset class="form__block">
         <legend class="form__legend">Цена</legend>
         <label class="form__label form__label--price">
@@ -24,6 +25,7 @@
         </label>
       </fieldset>
 
+      <!-- Категория -->
       <fieldset class="form__block">
         <legend class="form__legend">Категория</legend>
         <label class="form__label form__label--select">
@@ -42,60 +44,25 @@
         </label>
       </fieldset>
 
+      <!-- Цвет -->
       <fieldset class="form__block">
         <legend class="form__legend">Цвет</legend>
         <ul class="colors">
-          <li class="colors__item">
+          <li class="colors__item" v-for="color in colors" :key="color.id">
             <label class="colors__label">
               <input
                 class="colors__radio sr-only"
                 type="radio"
                 name="color"
-                value="#73B6EA"
-                checked=""
+                :v-model="color.value"
               />
-              <span class="colors__value" style="background-color: #73B6EA;"> </span>
+              <span class="colors__value" :style="{ backgroundColor: color.value }"> </span>
             </label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FFBE15" />
-              <span class="colors__value" style="background-color: #FFBE15;"> </span>
-            </label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#939393"/>
-              <span class="colors__value" style="background-color: #939393;"> </span
-            ></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#8BE000"/>
-              <span class="colors__value" style="background-color: #8BE000;"> </span
-            ></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FF6B00"/>
-              <span class="colors__value" style="background-color: #FF6B00;"> </span
-            ></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#FFF"/>
-              <span class="colors__value" style="background-color: #FFF;"> </span
-            ></label>
-          </li>
-          <li class="colors__item">
-            <label class="colors__label">
-              <input class="colors__radio sr-only" type="radio" name="color" value="#000"/>
-              <span class="colors__value" style="background-color: #000;"> </span
-            ></label>
           </li>
         </ul>
       </fieldset>
 
+      <!-- Объем памяти -->
       <fieldset class="form__block">
         <legend class="form__legend">Объемб в ГБ</legend>
         <ul class="check-list">
@@ -174,6 +141,7 @@
 
 <script>
 import categories from '../../data/categories';
+import colors from '../../data/colors';
 
 export default {
   data() {
@@ -228,6 +196,9 @@ export default {
     // },
     categories() {
       return categories;
+    },
+    colors() {
+      return colors;
     },
   },
 };
