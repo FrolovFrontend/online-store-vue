@@ -54,7 +54,6 @@
                 class="colors__radio sr-only"
                 type="radio"
                 name="color"
-                :v-model="color.value"
               />
               <span class="colors__value" :style="{ backgroundColor: color.value }"> </span>
             </label>
@@ -141,7 +140,7 @@
 
 <script>
 import categories from '../../data/categories';
-import colors from '../../data/colors';
+import products from '../../data/products';
 
 export default {
   data() {
@@ -198,7 +197,16 @@ export default {
       return categories;
     },
     colors() {
-      return colors;
+      const colors = products.map((x) => x.colors).flat();
+
+      function unique(arr) {
+        return Array.from(new Set(arr));
+      }
+
+      const allColors = colors.map((x) => x.id);
+
+      console.log(unique(allColors));
+      return unique(allColors);
     },
   },
 };

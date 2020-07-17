@@ -1,0 +1,17 @@
+const COLOR_WHITE = '#fff';
+const COLOR_BLACK = '#000';
+const COLOR_BLUE = '#73B6EA';
+const COLOR_YELLOW = '#FFBE15';
+const COLOR_GRAY = '#939393';
+const COLOR_GREEN = '#8BE000';
+const COLOR_ORANGE = '#FF6B00';
+
+export {
+  COLOR_WHITE,
+  COLOR_BLACK,
+  COLOR_BLUE,
+  COLOR_YELLOW,
+  COLOR_GRAY,
+  COLOR_GREEN,
+  COLOR_ORANGE,
+};

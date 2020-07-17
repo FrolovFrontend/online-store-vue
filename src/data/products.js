@@ -1,3 +1,13 @@
+import {
+  COLOR_WHITE, // id 1
+  COLOR_BLACK, // id 2
+  COLOR_BLUE, // id 3
+  COLOR_YELLOW, // id 4
+  COLOR_GRAY, // id 5
+  COLOR_GREEN, // id 6
+  COLOR_ORANGE, // id 7
+} from '../constans';
+
 export default [
   {
     id: 1,
@@ -7,19 +17,19 @@ export default [
     image: '/img/radio.jpg',
     colors: [
       {
-        id: 1,
-        name: 'blue',
-        value: '#73B6EA',
+        id: 3,
+        value: COLOR_BLUE,
+        checked: true,
+      },
+      {
+        id: 6,
+        value: COLOR_GREEN,
+        checked: false,
       },
       {
         id: 2,
-        name: 'yellow',
-        value: '#FFBE15',
-      },
-      {
-        id: 3,
-        name: 'gray',
-        value: '#939393',
+        value: COLOR_BLACK,
+        checked: false,
       },
     ],
   },
@@ -31,14 +41,19 @@ export default [
     image: '/img/toothbrush.jpg',
     colors: [
       {
-        id: 3,
-        name: 'gray',
-        value: '#939393',
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
       },
       {
-        id: 6,
-        name: 'white',
-        value: '#FFF',
+        id: 5,
+        value: COLOR_GRAY,
+        checked: false,
+      },
+      {
+        id: 4,
+        value: COLOR_YELLOW,
+        checked: false,
       },
     ],
   },
@@ -48,6 +63,18 @@ export default [
     title: 'Смартфон Xiaomi Mi Mix 3 6/128GB',
     price: 21790,
     image: '/img/phone.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 4,
@@ -55,6 +82,18 @@ export default [
     title: 'Электроскейт Razor Cruiser',
     price: 24690,
     image: '/img/board.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 5,
@@ -62,6 +101,18 @@ export default [
     title: 'Смартфон Xiaomi Mi A3 4/64GB Android One',
     price: 14960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 6,
@@ -69,6 +120,18 @@ export default [
     title: 'Смартфон Xiaomi Redmi 6/128GB',
     price: 8960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 7,
@@ -76,6 +139,18 @@ export default [
     title: 'Электрический дрифт-карт Razor Crazy Cart',
     price: 39900,
     image: '/img/bicycle.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 8,
@@ -83,6 +158,18 @@ export default [
     title: 'Гироскутер Razor Hovertrax 2.0',
     price: 34900,
     image: '/img/wheels.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 9,
@@ -90,6 +177,18 @@ export default [
     title: 'Детский трюковой самокат Razor Grom',
     price: 4990,
     image: '/img/scooter.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 10,
@@ -97,6 +196,18 @@ export default [
     title: 'Роллерсёрф Razor RipStik Air Pro',
     price: 6990,
     image: '/img/ripstik.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 11,
@@ -104,6 +215,18 @@ export default [
     title: 'Наушники AirPods с беспроводным зарядным футляром',
     price: 16560,
     image: '/img/airpods.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 12,
@@ -111,6 +234,18 @@ export default [
     title: 'Наушники Sony',
     price: 30690,
     image: '/img/headphones.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 13,
@@ -118,6 +253,18 @@ export default [
     title: 'Радионяня Motorola MBP16',
     price: 3690,
     image: '/img/radio.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 14,
@@ -125,6 +272,18 @@ export default [
     title: 'Ультразвуковая зубная щётка Playbrush Smart Sonic',
     price: 5660,
     image: '/img/toothbrush.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 15,
@@ -132,6 +291,18 @@ export default [
     title: 'Смартфон Xiaomi Mi Mix 3 6/128GB',
     price: 21790,
     image: '/img/phone.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 16,
@@ -139,6 +310,18 @@ export default [
     title: 'Электроскейт Razor Cruiser',
     price: 24690,
     image: '/img/board.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 17,
@@ -146,6 +329,18 @@ export default [
     title: 'Смартфон Xiaomi Mi A3 4/64GB Android One',
     price: 14960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 18,
@@ -153,6 +348,18 @@ export default [
     title: 'Смартфон Xiaomi Redmi 6/128GB',
     price: 8960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 19,
@@ -160,6 +367,18 @@ export default [
     title: 'Электрический дрифт-карт Razor Crazy Cart',
     price: 39900,
     image: '/img/bicycle.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 20,
@@ -167,6 +386,18 @@ export default [
     title: 'Гироскутер Razor Hovertrax 2.0',
     price: 34900,
     image: '/img/wheels.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 21,
@@ -174,6 +405,18 @@ export default [
     title: 'Детский трюковой самокат Razor Grom',
     price: 4990,
     image: '/img/scooter.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 22,
@@ -181,6 +424,18 @@ export default [
     title: 'Роллерсёрф Razor RipStik Air Pro',
     price: 6990,
     image: '/img/ripstik.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 23,
@@ -188,6 +443,18 @@ export default [
     title: 'Наушники AirPods с беспроводным зарядным футляром',
     price: 16560,
     image: '/img/airpods.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 24,
@@ -195,6 +462,18 @@ export default [
     title: 'Наушники Sony',
     price: 30690,
     image: '/img/headphones.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 25,
@@ -202,6 +481,18 @@ export default [
     title: 'Радионяня Motorola MBP16',
     price: 3690,
     image: '/img/radio.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 26,
@@ -209,6 +500,18 @@ export default [
     title: 'Ультразвуковая зубная щётка Playbrush Smart Sonic',
     price: 5660,
     image: '/img/toothbrush.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 27,
@@ -216,6 +519,18 @@ export default [
     title: 'Смартфон Xiaomi Mi Mix 3 6/128GB',
     price: 21790,
     image: '/img/phone.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 28,
@@ -223,6 +538,18 @@ export default [
     title: 'Электроскейт Razor Cruiser',
     price: 24690,
     image: '/img/board.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 29,
@@ -230,6 +557,18 @@ export default [
     title: 'Смартфон Xiaomi Mi A3 4/64GB Android One',
     price: 14960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 30,
@@ -237,6 +576,18 @@ export default [
     title: 'Смартфон Xiaomi Redmi 6/128GB',
     price: 8960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 31,
@@ -244,6 +595,18 @@ export default [
     title: 'Электрический дрифт-карт Razor Crazy Cart',
     price: 39900,
     image: '/img/bicycle.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 32,
@@ -251,6 +614,18 @@ export default [
     title: 'Гироскутер Razor Hovertrax 2.0',
     price: 34900,
     image: '/img/wheels.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 33,
@@ -258,6 +633,18 @@ export default [
     title: 'Детский трюковой самокат Razor Grom',
     price: 4990,
     image: '/img/scooter.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 34,
@@ -265,6 +652,18 @@ export default [
     title: 'Роллерсёрф Razor RipStik Air Pro',
     price: 6990,
     image: '/img/ripstik.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 35,
@@ -272,6 +671,18 @@ export default [
     title: 'Наушники AirPods с беспроводным зарядным футляром',
     price: 16560,
     image: '/img/airpods.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 36,
@@ -279,6 +690,18 @@ export default [
     title: 'Наушники Sony',
     price: 30690,
     image: '/img/headphones.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 37,
@@ -286,6 +709,18 @@ export default [
     title: 'Радионяня Motorola MBP16',
     price: 3690,
     image: '/img/radio.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 38,
@@ -293,6 +728,18 @@ export default [
     title: 'Ультразвуковая зубная щётка Playbrush Smart Sonic',
     price: 5660,
     image: '/img/toothbrush.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 39,
@@ -300,6 +747,18 @@ export default [
     title: 'Смартфон Xiaomi Mi Mix 3 6/128GB',
     price: 21790,
     image: '/img/phone.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 40,
@@ -307,6 +766,18 @@ export default [
     title: 'Электроскейт Razor Cruiser',
     price: 24690,
     image: '/img/board.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 41,
@@ -314,6 +785,18 @@ export default [
     title: 'Смартфон Xiaomi Mi A3 4/64GB Android One',
     price: 14960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 42,
@@ -321,6 +804,18 @@ export default [
     title: 'Смартфон Xiaomi Redmi 6/128GB',
     price: 8960,
     image: '/img/phone-2.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 43,
@@ -328,6 +823,18 @@ export default [
     title: 'Электрический дрифт-карт Razor Crazy Cart',
     price: 39900,
     image: '/img/bicycle.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 44,
@@ -335,6 +842,18 @@ export default [
     title: 'Гироскутер Razor Hovertrax 2.0',
     price: 34900,
     image: '/img/wheels.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 45,
@@ -342,6 +861,18 @@ export default [
     title: 'Детский трюковой самокат Razor Grom',
     price: 4990,
     image: '/img/scooter.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 46,
@@ -349,6 +880,18 @@ export default [
     title: 'Роллерсёрф Razor RipStik Air Pro',
     price: 6990,
     image: '/img/ripstik.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 47,
@@ -356,6 +899,18 @@ export default [
     title: 'Наушники AirPods с беспроводным зарядным футляром',
     price: 16560,
     image: '/img/airpods.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
   {
     id: 48,
@@ -363,5 +918,17 @@ export default [
     title: 'Наушники Sony',
     price: 30690,
     image: '/img/headphones.jpg',
+    colors: [
+      {
+        id: 1,
+        value: COLOR_WHITE,
+        checked: true,
+      },
+      {
+        id: 7,
+        value: COLOR_ORANGE,
+        checked: false,
+      },
+    ],
   },
 ];
