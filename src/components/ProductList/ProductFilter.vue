@@ -198,15 +198,16 @@ export default {
     },
     colors() {
       const colors = products.map((x) => x.colors).flat();
+      const result = [];
 
-      function unique(arr) {
-        return Array.from(new Set(arr));
+      for (let i = 0; i < colors.length; i++) {
+        const indexes = result.map((item) => item.id);
+        if (!indexes.includes(colors[i].id)) {
+          result.push(colors[i]);
+        }
       }
 
-      const allColors = colors.map((x) => x.id);
-
-      console.log(unique(allColors));
-      return unique(allColors);
+      return result;
     },
   },
 };
