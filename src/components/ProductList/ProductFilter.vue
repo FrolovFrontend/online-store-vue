@@ -54,6 +54,8 @@
                 class="colors__radio sr-only"
                 type="radio"
                 name="color"
+                v-model.number="currentColorId"
+                :value="color.id"
               />
               <span class="colors__value" :style="{ backgroundColor: color.value }"> </span>
             </label>
@@ -150,12 +152,14 @@ export default {
       currentPriceFrom: 0,
       currentPriceTo: 0,
       currentCategoryId: 0,
+      currentColorId: 0,
     };
   },
   props: {
     priceFrom: Number,
     priceTo: Number,
     categoryId: Number,
+    colorId: Number,
   },
   watch: {
     priceFrom(value) {
@@ -176,11 +180,13 @@ export default {
       this.$emit('update:priceFrom', this.currentPriceFrom);
       this.$emit('update:priceTo', this.currentPriceTo);
       this.$emit('update:categoryId', this.currentCategoryId);
+      this.$emit('update:colorId', this.currentColorId);
     },
     reset() {
       this.$emit('update:priceFrom', 0);
       this.$emit('update:priceTo', 0);
       this.$emit('update:categoryId', 0);
+      this.$emit('update:colorId', 0)
     },
   },
   computed: {
@@ -206,7 +212,16 @@ export default {
           result.push(colors[i]);
         }
       }
-
+      result.sort((a, b) => {
+        if (a.id > b.id) {
+          return 1;
+        }
+        if (a.id < b.id) {
+          return -1;
+        }
+        return 0;
+      })
+      console.log(result);
       return result;
     },
   },

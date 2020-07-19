@@ -15,6 +15,8 @@
               class="colors__radio sr-only"
               type="radio"
               name="color"
+              :value="color.id"
+              :checked="color.checked"
             />
             <span class="colors__value" :style="{ backgroundColor: color.value }"></span>
           </label>
