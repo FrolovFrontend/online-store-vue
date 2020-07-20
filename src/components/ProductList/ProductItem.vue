@@ -14,7 +14,7 @@
             <input
               class="colors__radio sr-only"
               type="radio"
-              name="color"
+              :name="item.id"
               :value="color.id"
               :checked="color.checked"
             />
