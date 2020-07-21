@@ -1,15 +1,10 @@
 <template>
   <main class="content container">
     <div class="content__top content__top--catalog">
-      <h1 class="content__title">
-        Каталог
-      </h1>
-      <span class="content__info">
-        {{ countProducts }} товара
-      </span>
+      <h1 class="content__title">Каталог</h1>
+      <span class="content__info">{{ countProducts }} товара</span>
     </div>
     <div class="content__catalog">
-
       <product-filter
         :price-from.sync="filterPriceFrom"
         :price-to.sync="filterPriceTo"
@@ -18,29 +13,22 @@
       />
 
       <section class="catalog">
-
         <product-list :products="products" />
 
-        <base-pagination
-          v-model="page"
-          :count="countProducts"
-          :per-page="productsPerPage"
-        />
-
+        <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
-
     </div>
   </main>
 </template>
 
 <script>
-import products from './data/products';
-import ProductList from './components/ProductList/ProductList.vue';
-import BasePagination from './components/BasePagination.vue';
-import ProductFilter from './components/ProductList/ProductFilter.vue';
+import products from "./data/products";
+import ProductList from "./components/ProductList/ProductList.vue";
+import BasePagination from "./components/BasePagination.vue";
+import ProductFilter from "./components/ProductList/ProductFilter.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: { ProductList, BasePagination, ProductFilter },
   data() {
     return {
@@ -50,7 +38,7 @@ export default {
       filterColorId: 0,
 
       page: 1,
-      productsPerPage: 6,
+      productsPerPage: 6
     };
   },
   computed: {
@@ -59,26 +47,27 @@ export default {
 
       if (this.filterPriceFrom > 0) {
         filteredProducts = filteredProducts.filter(
-          (product) => product.price > this.filterPriceFrom,
+          product => product.price > this.filterPriceFrom
         );
       }
 
       if (this.filterPriceTo > 0) {
         filteredProducts = filteredProducts.filter(
-          (product) => product.price < this.filterPriceTo,
+          product => product.price < this.filterPriceTo
         );
       }
 
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts.filter(
-          (product) => product.categoryId === this.filterCategoryId,
+          product => product.categoryId === this.filterCategoryId
         );
       }
 
       if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.colorId === this.filterColorId,
-        );
+        filteredProducts = filteredProducts
+          // .find(product => product.colors)
+          .filter(product => product.colors.id === this.filterColorId);
+        console.log(filteredProducts);
       }
 
       return filteredProducts;
@@ -89,7 +78,7 @@ export default {
     },
     countProducts() {
       return this.filteredProducts.length;
-    },
-  },
+    }
+  }
 };
 </script>
