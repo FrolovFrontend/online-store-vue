@@ -64,11 +64,18 @@ export default {
       }
 
       if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts
-          // .find(product => product.colors)
-          .filter(product => product.colors.id === this.filterColorId);
-        console.log(filteredProducts);
+        filteredProducts = filteredProducts.filter(product => {
+          if (!product.colors) return false;
+          const ids = product.colors.map(item => item.id);
+          return ids.includes(this.filterColorId);
+        });
       }
+
+      // if (this.filterColorId > 0) {
+      //   filteredProducts = filteredProducts.filter(product =>
+      //     product.colors.some(item => item.id === this.filterColorId)
+      //   );
+      // }
 
       return filteredProducts;
     },

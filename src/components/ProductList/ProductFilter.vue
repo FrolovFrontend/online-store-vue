@@ -7,20 +7,11 @@
       <fieldset class="form__block">
         <legend class="form__legend">Цена</legend>
         <label class="form__label form__label--price">
-          <input
-            class="form__input"
-            type="text" name="min-price"
-            v-model.number="currentPriceFrom"
-          />
+          <input class="form__input" type="text" name="min-price" v-model.number="currentPriceFrom" />
           <span class="form__value">От</span>
         </label>
         <label class="form__label form__label--price">
-          <input
-            class="form__input"
-            type="text"
-            name="max-price"
-            v-model.number="currentPriceTo"
-          />
+          <input class="form__input" type="text" name="max-price" v-model.number="currentPriceTo" />
           <span class="form__value">До</span>
         </label>
       </fieldset>
@@ -31,15 +22,16 @@
         <label class="form__label form__label--select">
           <select
             class="form__select"
-            type="text" name="category"
+            type="text"
+            name="category"
             v-model.number="currentCategoryId"
           >
             <option value="0">Все категории</option>
             <option
               :value="category.id"
               v-for="category in categories"
-              :key="category.id">{{ category.title }}
-            </option>
+              :key="category.id"
+            >{{ category.title }}</option>
           </select>
         </label>
       </fieldset>
@@ -57,7 +49,7 @@
                 v-model.number="currentColorId"
                 :value="color.id"
               />
-              <span class="colors__value" :style="{ backgroundColor: color.value }"> </span>
+              <span class="colors__value" :style="{ backgroundColor: color.value }"></span>
             </label>
           </li>
         </ul>
@@ -74,7 +66,7 @@
                 type="checkbox"
                 name="volume"
                 value="8"
-                checked=""
+                checked
               />
               <span class="check-list__desc">
                 8
@@ -130,19 +122,19 @@
         </ul>
       </fieldset>
 
-      <button class="filter__submit button button--primery" type="submit">
-        Применить
-      </button>
-      <button class="filter__reset button button--second" type="button" @click.prevent="reset">
-        Сбросить
-      </button>
+      <button class="filter__submit button button--primery" type="submit">Применить</button>
+      <button
+        class="filter__reset button button--second"
+        type="button"
+        @click.prevent="reset"
+      >Сбросить</button>
     </form>
   </aside>
 </template>
 
 <script>
-import categories from '../../data/categories';
-import products from '../../data/products';
+import categories from "../../data/categories";
+import products from "../../data/products";
 
 export default {
   data() {
@@ -152,14 +144,14 @@ export default {
       currentPriceFrom: 0,
       currentPriceTo: 0,
       currentCategoryId: 0,
-      currentColorId: 0,
+      currentColorId: 0
     };
   },
   props: {
     priceFrom: Number,
     priceTo: Number,
     categoryId: Number,
-    colorId: Number,
+    colorId: Number
   },
   watch: {
     priceFrom(value) {
@@ -172,7 +164,7 @@ export default {
       this.currentCategoryId = value;
     },
     colorId(value) {
-      this.currentColorId = value; 
+      this.currentColorId = value;
     }
   },
   methods: {
@@ -180,17 +172,17 @@ export default {
       // говорим, что обновилось состояние priceFrom
       // и в качестве нового значения передаем currentPriceFrom
       // (который привязан к инпутам через v-model) и так для всех
-      this.$emit('update:priceFrom', this.currentPriceFrom);
-      this.$emit('update:priceTo', this.currentPriceTo);
-      this.$emit('update:categoryId', this.currentCategoryId);
-      this.$emit('update:colorId', this.currentColorId);
+      this.$emit("update:priceFrom", this.currentPriceFrom);
+      this.$emit("update:priceTo", this.currentPriceTo);
+      this.$emit("update:categoryId", this.currentCategoryId);
+      this.$emit("update:colorId", this.currentColorId);
     },
     reset() {
-      this.$emit('update:priceFrom', 0);
-      this.$emit('update:priceTo', 0);
-      this.$emit('update:categoryId', 0);
-      this.$emit('update:colorId', 0)
-    },
+      this.$emit("update:priceFrom", 0);
+      this.$emit("update:priceTo", 0);
+      this.$emit("update:categoryId", 0);
+      this.$emit("update:colorId", 0);
+    }
   },
   computed: {
     // Если бы нужно было фильтровать на лету
@@ -206,18 +198,21 @@ export default {
       return categories;
     },
     colors() {
-      const colors = products.map((x) => x.colors).flat();
+      const colors = products
+        .filter(product => product.colors)
+        .map(x => x.colors)
+        .flat();
       const result = [];
 
       for (let i = 0; i < colors.length; i++) {
-        const indexes = result.map((item) => item.id);
+        const indexes = result.map(item => item.id);
         if (!indexes.includes(colors[i].id)) {
           result.push(colors[i]);
         }
       }
-      result.sort((a, b) => a.id > b.id ? 1 : a.id < b.id ? -1 : 0);
+      result.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
       return result;
-    },
-  },
+    }
+  }
 };
 </script>
