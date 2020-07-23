@@ -57,64 +57,19 @@
 
       <!-- Объем памяти -->
       <fieldset class="form__block">
-        <legend class="form__legend">Объемб в ГБ</legend>
+        <legend class="form__legend">Объем памяти</legend>
         <ul class="check-list">
-          <li class="check-list__item">
+          <li class="check-list__item" v-for="memory in memories" :key="memory.id">
             <label class="check-list__label">
               <input
                 class="check-list__check sr-only"
                 type="checkbox"
                 name="volume"
-                value="8"
-                checked
+                v-model="currentMemoryId"
+                :value="memory.id"
               />
               <span class="check-list__desc">
-                8
-                <span>(313)</span>
-              </span>
-            </label>
-          </li>
-          <li class="check-list__item">
-            <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="16" />
-              <span class="check-list__desc">
-                16
-                <span>(461)</span>
-              </span>
-            </label>
-          </li>
-          <li class="check-list__item">
-            <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="32" />
-              <span class="check-list__desc">
-                32
-                <span>(313)</span>
-              </span>
-            </label>
-          </li>
-          <li class="check-list__item">
-            <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="64" />
-              <span class="check-list__desc">
-                64
-                <span>(313)</span>
-              </span>
-            </label>
-          </li>
-          <li class="check-list__item">
-            <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="128" />
-              <span class="check-list__desc">
-                128
-                <span>(313)</span>
-              </span>
-            </label>
-          </li>
-          <li class="check-list__item">
-            <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="volume" value="264" />
-              <span class="check-list__desc">
-                264
+                {{ memory.value }}
                 <span>(313)</span>
               </span>
             </label>
@@ -144,14 +99,16 @@ export default {
       currentPriceFrom: 0,
       currentPriceTo: 0,
       currentCategoryId: 0,
-      currentColorId: 0
+      currentColorId: 0,
+      currentMemoryId: 0,
     };
   },
   props: {
     priceFrom: Number,
     priceTo: Number,
     categoryId: Number,
-    colorId: Number
+    colorId: Number,
+    memoryId: Number,
   },
   watch: {
     priceFrom(value) {
@@ -165,7 +122,10 @@ export default {
     },
     colorId(value) {
       this.currentColorId = value;
-    }
+    },
+    memoryId(value) {
+      this.currentMemoryId = value;
+    },
   },
   methods: {
     submit() {
@@ -176,13 +136,15 @@ export default {
       this.$emit("update:priceTo", this.currentPriceTo);
       this.$emit("update:categoryId", this.currentCategoryId);
       this.$emit("update:colorId", this.currentColorId);
+      this.$emit("update:memoryId", this.currentMemoryId);
     },
     reset() {
       this.$emit("update:priceFrom", 0);
       this.$emit("update:priceTo", 0);
       this.$emit("update:categoryId", 0);
       this.$emit("update:colorId", 0);
-    }
+      this.$emit("update:memoryId", 0);
+    },
   },
   computed: {
     // Если бы нужно было фильтровать на лету
@@ -199,20 +161,36 @@ export default {
     },
     colors() {
       const colors = products
-        .filter(product => product.colors)
-        .map(x => x.colors)
+        .filter((product) => product.colors)
+        .map((x) => x.colors)
         .flat();
       const result = [];
 
       for (let i = 0; i < colors.length; i++) {
-        const indexes = result.map(item => item.id);
+        const indexes = result.map((item) => item.id);
         if (!indexes.includes(colors[i].id)) {
           result.push(colors[i]);
         }
       }
       result.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
       return result;
-    }
-  }
+    },
+    memories() {
+      const memories = products
+        .filter((product) => product.memories)
+        .map((item) => item.memories)
+        .flat();
+      const result = [];
+
+      for (let i = 0; i < memories.length; i++) {
+        const indexes = result.map((item) => item.id);
+        if (!indexes.includes(memories[i].id)) {
+          result.push(memories[i]);
+        }
+      }
+      result.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
+      return result;
+    },
+  },
 };
 </script>

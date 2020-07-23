@@ -6,6 +6,10 @@ import {
   COLOR_GRAY, // id 5
   COLOR_GREEN, // id 6
   COLOR_ORANGE, // id 7
+
+  MEMORY_32GB, // 1
+  MEMORY_64GB, // 2
+  MEMORY_128GB, // 3
 } from "../constans";
 
 export default [
@@ -70,6 +74,23 @@ export default [
         checked: false,
       },
     ],
+    memories: [
+      {
+        id: 1,
+        value: MEMORY_32GB,
+        checked: false,
+      },
+      {
+        id: 2,
+        value: MEMORY_64GB,
+        checked: false,
+      },
+      {
+        id: 3,
+        value: MEMORY_128GB,
+        checked: true,
+      },
+    ],
   },
   {
     id: 4,
@@ -101,6 +122,18 @@ export default [
         checked: false,
       },
     ],
+    memories: [
+      {
+        id: 1,
+        value: MEMORY_32GB,
+        checked: false,
+      },
+      {
+        id: 2,
+        value: MEMORY_64GB,
+        checked: true,
+      },
+    ],
   },
   {
     id: 6,
@@ -118,6 +151,18 @@ export default [
         id: 1,
         value: COLOR_WHITE,
         checked: false,
+      },
+    ],
+    memories: [
+      {
+        id: 2,
+        value: MEMORY_64GB,
+        checked: false,
+      },
+      {
+        id: 3,
+        value: MEMORY_128GB,
+        checked: true,
       },
     ],
   },

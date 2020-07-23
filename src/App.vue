@@ -10,6 +10,7 @@
         :price-to.sync="filterPriceTo"
         :category-id.sync="filterCategoryId"
         :color-id.sync="filterColorId"
+        :memory-id.sync="filterMemoryId"
       />
 
       <section class="catalog">
@@ -36,9 +37,10 @@ export default {
       filterPriceTo: 0,
       filterCategoryId: 0,
       filterColorId: 0,
+      filterMemoryId: 0,
 
       page: 1,
-      productsPerPage: 6
+      productsPerPage: 6,
     };
   },
   computed: {
@@ -47,27 +49,35 @@ export default {
 
       if (this.filterPriceFrom > 0) {
         filteredProducts = filteredProducts.filter(
-          product => product.price > this.filterPriceFrom
+          (product) => product.price > this.filterPriceFrom
         );
       }
 
       if (this.filterPriceTo > 0) {
         filteredProducts = filteredProducts.filter(
-          product => product.price < this.filterPriceTo
+          (product) => product.price < this.filterPriceTo
         );
       }
 
       if (this.filterCategoryId) {
         filteredProducts = filteredProducts.filter(
-          product => product.categoryId === this.filterCategoryId
+          (product) => product.categoryId === this.filterCategoryId
         );
       }
 
       if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts.filter(product => {
+        filteredProducts = filteredProducts.filter((product) => {
           if (!product.colors) return false;
-          const ids = product.colors.map(item => item.id);
+          const ids = product.colors.map((item) => item.id);
           return ids.includes(this.filterColorId);
+        });
+      }
+
+      if (this.filterMemoryId) {
+        filteredProducts = filteredProducts.filter((product) => {
+          if (!product.memories) return false;
+          const ids = product.memories.map((item) => item.id);
+          return ids.includes(this.filterMemoryId);
         });
       }
 
@@ -85,7 +95,7 @@ export default {
     },
     countProducts() {
       return this.filteredProducts.length;
-    }
-  }
+    },
+  },
 };
 </script>
