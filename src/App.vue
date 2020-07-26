@@ -37,7 +37,7 @@ export default {
       filterPriceTo: 0,
       filterCategoryId: 0,
       filterColorId: 0,
-      filterMemoryId: 0,
+      filterMemoryId: [],
 
       page: 1,
       productsPerPage: 6,
@@ -73,11 +73,11 @@ export default {
         });
       }
 
-      if (this.filterMemoryId) {
+      if (this.filterMemoryId.length > 0) {
         filteredProducts = filteredProducts.filter((product) => {
           if (!product.memories) return false;
           const ids = product.memories.map((item) => item.id);
-          return ids.includes(this.filterMemoryId);
+          return ids.includes(this.filterMemoryId.indexOf());
         });
       }
 

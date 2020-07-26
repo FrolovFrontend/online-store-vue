@@ -100,7 +100,7 @@ export default {
       currentPriceTo: 0,
       currentCategoryId: 0,
       currentColorId: 0,
-      currentMemoryId: 0,
+      currentMemoryId: [],
     };
   },
   props: {
@@ -108,7 +108,7 @@ export default {
     priceTo: Number,
     categoryId: Number,
     colorId: Number,
-    memoryId: Number,
+    memoryId: Array,
   },
   watch: {
     priceFrom(value) {
@@ -143,7 +143,7 @@ export default {
       this.$emit("update:priceTo", 0);
       this.$emit("update:categoryId", 0);
       this.$emit("update:colorId", 0);
-      this.$emit("update:memoryId", 0);
+      this.$emit("update:memoryId", []);
     },
   },
   computed: {
