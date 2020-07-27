@@ -66,26 +66,23 @@ export default {
       }
 
       if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts.filter((product) => {
-          if (!product.colors) return false;
-          const ids = product.colors.map((item) => item.id);
-          return ids.includes(this.filterColorId);
-        });
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.colors &&
+            product.colors.some((item) => item.id === this.filterColorId)
+        );
       }
 
       if (this.filterMemoryId.length > 0) {
-        filteredProducts = filteredProducts.filter((product) => {
-          if (!product.memories) return false;
-          const ids = product.memories.map((item) => item.id);
-          return ids.includes(this.filterMemoryId.indexOf());
-        });
+        filteredProducts = filteredProducts.filter(
+          (product) =>
+            product.memories &&
+            product.memories.some(
+              (item) =>
+                item.id === this.filterMemoryId.some((el) => el === item.id)
+            )
+        );
       }
-
-      // if (this.filterColorId > 0) {
-      //   filteredProducts = filteredProducts.filter(product =>
-      //     product.colors.some(item => item.id === this.filterColorId)
-      //   );
-      // }
 
       return filteredProducts;
     },
