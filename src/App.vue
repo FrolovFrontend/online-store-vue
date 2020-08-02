@@ -77,9 +77,8 @@ export default {
         filteredProducts = filteredProducts.filter(
           (product) =>
             product.memories &&
-            product.memories.some(
-              (item) =>
-                item.id === this.filterMemoryId.some((el) => el === item.id)
+            product.memories.some((item) =>
+              this.filterMemoryId.includes(item.id)
             )
         );
       }
