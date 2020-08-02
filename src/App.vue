@@ -11,6 +11,7 @@
         :category-id.sync="filterCategoryId"
         :color-id.sync="filterColorId"
         :memory-id.sync="filterMemoryId"
+        :products-with-memory="countProductsWithMemory"
       />
 
       <section class="catalog">
@@ -91,6 +92,18 @@ export default {
     },
     countProducts() {
       return this.filteredProducts.length;
+    },
+    countProductsWithMemory() {
+      let productsWithMemory = [];
+
+      this.filteredProducts.filter((product) => {
+        if (product.memories) {
+          productsWithMemory.push(product.memories);
+        }
+      });
+
+      console.log(productsWithMemory);
+      return productsWithMemory.length;
     },
   },
 };

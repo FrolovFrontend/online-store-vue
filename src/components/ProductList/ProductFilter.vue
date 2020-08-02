@@ -70,7 +70,7 @@
               />
               <span class="check-list__desc">
                 {{ memory.value }}
-                <span>(313)</span>
+                <span>({{productsWithMemory}})</span>
               </span>
             </label>
           </li>
@@ -109,6 +109,7 @@ export default {
     categoryId: Number,
     colorId: Number,
     memoryId: Array,
+    productsWithMemory: Number,
   },
   watch: {
     priceFrom(value) {
