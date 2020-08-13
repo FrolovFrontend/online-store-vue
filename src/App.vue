@@ -1,109 +1,38 @@
 <template>
-  <main class="content container">
-    <div class="content__top content__top--catalog">
-      <h1 class="content__title">Каталог</h1>
-      <span class="content__info">{{ countProducts }} товара</span>
-    </div>
-    <div class="content__catalog">
-      <product-filter
-        :price-from.sync="filterPriceFrom"
-        :price-to.sync="filterPriceTo"
-        :category-id.sync="filterCategoryId"
-        :color-id.sync="filterColorId"
-        :memory-id.sync="filterMemoryId"
-        :products-with-memory="countProductsWithMemory"
-      />
-
-      <section class="catalog">
-        <product-list :products="products" />
-
-        <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
-      </section>
-    </div>
-  </main>
+  <component
+    :is="currentPageComponent"
+    :page-params="currentPageParams"
+    @goto-page="(pageName, pageParams) => gotoPage(pageName, pageParams)"
+  />
 </template>
 
 <script>
-import products from "./data/products";
-import ProductList from "./components/ProductList/ProductList.vue";
-import BasePagination from "./components/BasePagination.vue";
-import ProductFilter from "./components/ProductList/ProductFilter.vue";
+import MainPage from "./pages/MainPage.vue";
+import ProductPage from "./pages/ProductPage.vue";
+import NotFoundPage from "./pages/NotFoundPage.vue";
+
+const routes = {
+  main: "MainPage",
+  product: "ProductPage",
+};
 
 export default {
-  name: "App",
-  components: { ProductList, BasePagination, ProductFilter },
   data() {
     return {
-      filterPriceFrom: 0,
-      filterPriceTo: 0,
-      filterCategoryId: 0,
-      filterColorId: 0,
-      filterMemoryId: [],
-
-      page: 1,
-      productsPerPage: 6,
+      currentPage: "main",
+      currentPageParams: {},
     };
   },
+  components: { MainPage, ProductPage, NotFoundPage },
+  methods: {
+    gotoPage(pageName, pageParams) {
+      this.currentPage = pageName;
+      this.currentPageParams = pageParams;
+    },
+  },
   computed: {
-    filteredProducts() {
-      let filteredProducts = products;
-
-      if (this.filterPriceFrom > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.price > this.filterPriceFrom
-        );
-      }
-
-      if (this.filterPriceTo > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.price < this.filterPriceTo
-        );
-      }
-
-      if (this.filterCategoryId) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.categoryId === this.filterCategoryId
-        );
-      }
-
-      if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) =>
-            product.colors &&
-            product.colors.some((item) => item.id === this.filterColorId)
-        );
-      }
-
-      if (this.filterMemoryId.length > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) =>
-            product.memories &&
-            product.memories.some((item) =>
-              this.filterMemoryId.includes(item.id)
-            )
-        );
-      }
-
-      return filteredProducts;
-    },
-    products() {
-      const offset = (this.page - 1) * this.productsPerPage;
-      return this.filteredProducts.slice(offset, offset + this.productsPerPage);
-    },
-    countProducts() {
-      return this.filteredProducts.length;
-    },
-    countProductsWithMemory() {
-      let productsWithMemory = [];
-
-      this.filteredProducts.filter((product) => {
-        if (product.memories) {
-          productsWithMemory.push(product.memories);
-        }
-      });
-
-      console.log(productsWithMemory);
-      return productsWithMemory.length;
+    currentPageComponent() {
+      return routes[this.currentPage] || "NotFoundPage";
     },
   },
 };
