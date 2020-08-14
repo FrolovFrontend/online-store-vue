@@ -4,7 +4,6 @@
       :item="product"
       v-for="product in products"
       :key="product.id"
-      @goto-page="(pageName, pageParams) => $emit('goto-page', pageName, pageParams)"
     />
   </ul>
 </template>
