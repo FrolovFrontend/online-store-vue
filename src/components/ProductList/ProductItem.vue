@@ -42,7 +42,7 @@
 
 <script>
 import gotoPage from "@/helpers/gotoPage";
-import numberFormat from "@/helpers/numberFormat";
+import numberFormat from "@/helpers/filters/numberFormat";
 
 export default {
   props: ["item"],
