@@ -3,13 +3,16 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="#" @click.prevent="gotoPage('main')">Каталог</a>
+          <!-- первый способ роута -->
+          <!-- предпочтительный -->
+          <router-link class="breadcrumbs__link" :to="{name: 'main'}">Каталог</router-link>
         </li>
         <li class="breadcrumbs__item">
+          <!-- второй способ роута -->
+          <!-- если нужно сделать переход в каком нибудь методе компонента -->
           <a
             class="breadcrumbs__link"
-            href="#"
-            @click.prevent="gotoPage('main')"
+            @click.prevent="$router.push({name: 'main'})"
           >{{ category.title }}</a>
         </li>
         <li class="breadcrumbs__item">
@@ -169,17 +172,15 @@
 <script>
 import products from "@/data/products";
 import categories from "@/data/categories";
-import gotoPage from "@/helpers/gotoPage";
-import numberFormat from "@/helpers/numberFormat";
+import numberFormat from "@/helpers/filters/numberFormat";
 
 export default {
-  props: ["pageParams"],
   filters: {
     numberFormat,
   },
   computed: {
     product() {
-      return products.find((product) => product.id === this.pageParams.id);
+      return products.find((product) => product.id === +this.$route.params.id);
     },
     category() {
       return categories.find(
@@ -187,6 +188,5 @@ export default {
       );
     },
   },
-  methods: { gotoPage },
 };
 </script>

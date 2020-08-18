@@ -1,8 +1,8 @@
 <template>
   <li class="catalog__item">
-    <a class="catalog__pic" href="#" @click.prevent="gotoPage('product', {id: item.id})">
+    <router-link class="catalog__pic" :to="{name: 'product', params: {id: item.id}}">
       <img :src="item.image" :alt="item.title" />
-    </a>
+    </router-link>
     <h3 class="catalog__title">
       <a href="#">{{ item.title }}</a>
     </h3>
@@ -41,15 +41,13 @@
 </template>
 
 <script>
-import gotoPage from "@/helpers/gotoPage";
-import numberFormat from "@/helpers/numberFormat";
+import numberFormat from "@/helpers/filters/numberFormat";
 
 export default {
   props: ["item"],
   filters: {
     numberFormat,
   },
-  methods: { gotoPage },
 };
 </script>
 
