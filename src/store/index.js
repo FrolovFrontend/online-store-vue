@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import products from "@/data/products";
 
 Vue.use(Vuex);
 
@@ -27,7 +28,7 @@ export default new Vuex.Store({
       // проверка на наличие товара в корзине(хранилище)
       // если товар уже есть добавляется его количество
       // иначе добавляется новый объект в состояние
-      // 
+      //
       if (item) {
         item.amount += payload.amount;
       } else {
@@ -36,6 +37,41 @@ export default new Vuex.Store({
           amount: payload.amount,
         });
       }
+    },
+    updateCartProductAmount(state, { productId, amount }) {
+      const item = state.cartProducts.find(
+        (item) => item.productId === productId
+      );
+
+      if (item) {
+        item.amount = amount;
+      }
+    },
+    deleteCartProduct(state, productId) {
+      state.cartProducts = state.cartProducts.filter(
+        (item) => item.productId !== productId
+      );
+    },
+  },
+  getters: {
+    // геттер для получения подробной информации о товаре по его id
+    cartDetailProducts(state) {
+      return state.cartProducts.map((item) => {
+        return {
+          ...item,
+          product: products.find((p) => p.id === item.productId),
+        };
+      });
+    },
+
+    // геттер для получение общей суммы товаров в корзине
+    // в getters объект всех геттеров, то есть можно обратится
+    // к инфе уже созданного геттера, что бы не дублировать код
+    cartTotalPrice(state, getters) {
+      return getters.cartDetailProducts.reduce(
+        (acc, item) => item.product.price * item.amount + acc,
+        0
+      );
     },
   },
 });

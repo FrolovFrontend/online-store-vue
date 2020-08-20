@@ -10,7 +10,7 @@ import {
   MEMORY_32GB, // 1
   MEMORY_64GB, // 2
   MEMORY_128GB, // 3
-} from "../constans";
+} from "../helpers/constans";
 
 export default [
   {
