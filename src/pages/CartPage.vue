@@ -3,7 +3,7 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">Каталог</a>
+          <router-link class="breadcrumbs__link" :to="{name: 'main'}">Каталог</router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">Корзина</a>
@@ -11,7 +11,7 @@
       </ul>
 
       <h1 class="content__title">Корзина</h1>
-      <span class="content__info">{{ products.length }} товара</span>
+      <span class="content__info">{{ products.length }} {{ declOfProduct }}</span>
     </div>
 
     <section class="cart">
@@ -38,8 +38,10 @@
 
 <script>
 import numberFormat from "@/helpers/filters/numberFormat";
+import declOfNumber from "@/helpers/declOfNumber";
 import { mapGetters } from "vuex";
 import CartItem from "@/components/CartItem.vue";
+import products from "../data/products";
 
 export default {
   filters: { numberFormat },
@@ -51,6 +53,12 @@ export default {
       products: "cartDetailProducts",
       totalPrice: "cartTotalPrice",
     }),
+    declOfProduct() {
+      const decl = ["товар", "товара", "товаров"];
+      const quantity = this.products.length;
+
+      return declOfNumber(quantity, decl);
+    },
   },
 };
 </script>

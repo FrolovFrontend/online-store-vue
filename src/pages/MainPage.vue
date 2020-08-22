@@ -2,7 +2,7 @@
   <main class="content container">
     <div class="content__top content__top--catalog">
       <h1 class="content__title">Каталог</h1>
-      <span class="content__info">{{ countProducts }} товара</span>
+      <span class="content__info">{{ countProducts }} {{ declOfProduct }}</span>
     </div>
     <div class="content__catalog">
       <product-filter
@@ -15,9 +15,7 @@
       />
 
       <section class="catalog">
-        <product-list
-          :products="products"
-        />
+        <product-list :products="products" />
 
         <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
@@ -30,6 +28,7 @@ import products from "@/data/products";
 import ProductList from "@/components/ProductList/ProductList.vue";
 import BasePagination from "@/components/BasePagination.vue";
 import ProductFilter from "@/components/ProductList/ProductFilter.vue";
+import declOfNumber from "@/helpers/declOfNumber";
 
 export default {
   components: { ProductList, BasePagination, ProductFilter },
@@ -93,6 +92,12 @@ export default {
     },
     countProducts() {
       return this.filteredProducts.length;
+    },
+    declOfProduct() {
+      const decl = ["товар", "товара", "товаров"];
+      const quantity = this.countProducts;
+
+      return declOfNumber(quantity, decl);
     },
     countProductsWithMemory() {
       let productsWithMemory = [];

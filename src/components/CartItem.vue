@@ -9,10 +9,17 @@
         :alt="item.product.title"
       />
     </div>
-    <h3 class="product__title">{{ item.product.title }}</h3>
+    <router-link class="product__link" :to="{name: 'product', params: {id: item.productId}}">
+      <h3 class="product__title">{{ item.product.title }}</h3>
+    </router-link>
     <span class="product__code">Артикул: {{ item.productId }}</span>
     <div class="product__counter form__counter">
-      <button type="button" aria-label="Убрать один товар">
+      <button
+        type="button"
+        aria-label="Убрать один товар"
+        @click.prevent="amount--"
+        :disabled="amount < 2"
+      >
         <svg width="10" height="10" fill="currentColor">
           <use xlink:href="#icon-minus" />
         </svg>
@@ -20,7 +27,7 @@
 
       <input type="text" v-model.number="amount" name="count" />
 
-      <button type="button" aria-label="Добавить один товар">
+      <button type="button" aria-label="Добавить один товар" @click.prevent="amount++">
         <svg width="10" height="10" fill="currentColor">
           <use xlink:href="#icon-plus" />
         </svg>
@@ -65,7 +72,17 @@ export default {
   methods: {
     ...mapMutations({
       deleteProduct: "deleteCartProduct",
+      incrementUp: "productAmountIncrementUp",
     }),
   },
 };
 </script>
+
+<style>
+.product__link {
+  color: rgba(0, 0, 0, 1);
+}
+.product__link:hover {
+  color: rgba(0, 0, 0, 0.5);
+}
+</style>

@@ -33,9 +33,9 @@
         <h2 class="item__title">{{ product.title }}</h2>
         <div class="item__form">
           <form class="form" action="#" method="POST" @submit.prevent="addToCart">
-            <b class="item__price">{{ product.price | numberFormat }} ₽</b>
+            <b class="item__price">{{ (product.price * productAmount) | numberFormat }} ₽</b>
 
-            <fieldset class="form__block">
+            <!-- <fieldset class="form__block">
               <legend class="form__legend">Цвет:</legend>
               <ul class="colors">
                 <li class="colors__item">
@@ -104,11 +104,16 @@
                   </label>
                 </li>
               </ul>
-            </fieldset>
+            </fieldset>-->
 
             <div class="item__row">
               <div class="form__counter">
-                <button type="button" aria-label="Убрать один товар">
+                <button
+                  type="button"
+                  aria-label="Убрать один товар"
+                  @click.prevent="productAmount--"
+                  :disabled="productAmount < 1"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-minus" />
                   </svg>
@@ -116,14 +121,22 @@
 
                 <input type="text" v-model.number="productAmount" />
 
-                <button type="button" aria-label="Добавить один товар">
+                <button
+                  type="button"
+                  aria-label="Добавить один товар"
+                  @click.prevent="productAmount++"
+                >
                   <svg width="12" height="12" fill="currentColor">
                     <use xlink:href="#icon-plus" />
                   </svg>
                 </button>
               </div>
 
-              <button class="button button--primery" type="submit">В корзину</button>
+              <button
+                class="button button--primery"
+                type="submit"
+                :disabled="productAmount < 1"
+              >В корзину</button>
             </div>
           </form>
         </div>
