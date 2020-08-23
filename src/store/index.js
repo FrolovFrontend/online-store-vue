@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import products from "@/data/products";
 
 Vue.use(Vuex);
 

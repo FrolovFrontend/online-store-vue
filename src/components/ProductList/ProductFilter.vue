@@ -49,29 +49,7 @@
                 v-model.number="currentColorId"
                 :value="color.id"
               />
-              <span class="colors__value" :style="{ backgroundColor: color.value }"></span>
-            </label>
-          </li>
-        </ul>
-      </fieldset>
-
-      <!-- Объем памяти -->
-      <fieldset class="form__block">
-        <legend class="form__legend">Объем памяти</legend>
-        <ul class="check-list">
-          <li class="check-list__item" v-for="memory in memories" :key="memory.id">
-            <label class="check-list__label">
-              <input
-                class="check-list__check sr-only"
-                type="checkbox"
-                name="volume"
-                v-model="currentMemoryId"
-                :value="memory.id"
-              />
-              <span class="check-list__desc">
-                {{ memory.value }}
-                <span>({{productsWithMemory}})</span>
-              </span>
+              <span class="colors__value" :style="{ backgroundColor: color.code }"></span>
             </label>
           </li>
         </ul>
@@ -88,8 +66,8 @@
 </template>
 
 <script>
-import categories from "../../data/categories";
-import products from "../../data/products";
+import axios from "axios";
+import { API_BASE_URL } from "@/config";
 
 export default {
   data() {
@@ -100,7 +78,8 @@ export default {
       currentPriceTo: 0,
       currentCategoryId: 0,
       currentColorId: 0,
-      currentMemoryId: [],
+      categoriesData: null,
+      colorsData: null,
     };
   },
   props: {
@@ -124,11 +103,24 @@ export default {
     colorId(value) {
       this.currentColorId = value;
     },
-    memoryId(value) {
-      this.currentMemoryId = value;
-    },
   },
   methods: {
+    loadCategories() {
+      clearTimeout(this.loadCategoriesTimer);
+      this.loadCategoriesTimer = setTimeout(() => {
+        axios
+          .get(API_BASE_URL + "/api/productCategories")
+          .then((response) => (this.categoriesData = response.data));
+      }, 0);
+    },
+    loadColors() {
+      clearTimeout(this.loadColorsTimer);
+      this.loadColorsTimer = setTimeout(() => {
+        axios
+          .get(API_BASE_URL + "/api/colors")
+          .then((response) => (this.colorsData = response.data));
+      }, 0);
+    },
     submit() {
       // говорим, что обновилось состояние priceFrom
       // и в качестве нового значения передаем currentPriceFrom
@@ -137,14 +129,12 @@ export default {
       this.$emit("update:priceTo", this.currentPriceTo);
       this.$emit("update:categoryId", this.currentCategoryId);
       this.$emit("update:colorId", this.currentColorId);
-      this.$emit("update:memoryId", this.currentMemoryId);
     },
     reset() {
       this.$emit("update:priceFrom", 0);
       this.$emit("update:priceTo", 0);
       this.$emit("update:categoryId", 0);
       this.$emit("update:colorId", 0);
-      this.$emit("update:memoryId", []);
     },
   },
   computed: {
@@ -158,40 +148,15 @@ export default {
     //   }
     // },
     categories() {
-      return categories;
+      return this.categoriesData ? this.categoriesData.items : [];
     },
     colors() {
-      const colors = products
-        .filter((product) => product.colors)
-        .map((x) => x.colors)
-        .flat();
-      const result = [];
-
-      for (let i = 0; i < colors.length; i++) {
-        const indexes = result.map((item) => item.id);
-        if (!indexes.includes(colors[i].id)) {
-          result.push(colors[i]);
-        }
-      }
-      result.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-      return result;
+      return this.colorsData ? this.colorsData.items : [];
     },
-    memories() {
-      const memories = products
-        .filter((product) => product.memories)
-        .map((item) => item.memories)
-        .flat();
-      const result = [];
-
-      for (let i = 0; i < memories.length; i++) {
-        const indexes = result.map((item) => item.id);
-        if (!indexes.includes(memories[i].id)) {
-          result.push(memories[i]);
-        }
-      }
-      result.sort((a, b) => (a.id > b.id ? 1 : a.id < b.id ? -1 : 0));
-      return result;
-    },
+  },
+  created() {
+    this.loadCategories();
+    this.loadColors();
   },
 };
 </script>

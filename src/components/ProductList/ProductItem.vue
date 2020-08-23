@@ -4,7 +4,7 @@
       <img :src="item.image" :alt="item.title" />
     </router-link>
     <h3 class="catalog__title">
-      <a href="#">{{ item.title }}</a>
+      <router-link :to="{name: 'product', params: {id: item.id}}">{{ item.title }}</router-link>
     </h3>
     <span class="catalog__price">{{ item.price | numberFormat }} ₽</span>
 
@@ -16,9 +16,8 @@
             type="radio"
             :name="item.id + item.title"
             :value="color.id"
-            :checked="color.checked"
           />
-          <span class="colors__value" :style="{ backgroundColor: color.value }"></span>
+          <span class="colors__value" :style="{ backgroundColor: color.code }"></span>
         </label>
       </li>
     </ul>

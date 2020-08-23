@@ -10,13 +10,14 @@
         :price-to.sync="filterPriceTo"
         :category-id.sync="filterCategoryId"
         :color-id.sync="filterColorId"
-        :memory-id.sync="filterMemoryId"
-        :products-with-memory="countProductsWithMemory"
       />
-
       <section class="catalog">
+        <div class="loading" v-if="productsLoading">Загрузка товаров...</div>
+        <div class="error" v-if="productsLoadingFailed">
+          <p>Произошла ошибка при загрузке товаров</p>
+          <button class="button button--primery" @click.prevent="loadProducts">Повторить загрузку</button>
+        </div>
         <product-list :products="products" />
-
         <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
     </div>
@@ -24,11 +25,12 @@
 </template>
 
 <script>
-import products from "@/data/products";
 import ProductList from "@/components/ProductList/ProductList.vue";
 import BasePagination from "@/components/BasePagination.vue";
 import ProductFilter from "@/components/ProductList/ProductFilter.vue";
 import declOfNumber from "@/helpers/declOfNumber";
+import axios from "axios";
+import { API_BASE_URL } from "@/config";
 
 export default {
   components: { ProductList, BasePagination, ProductFilter },
@@ -38,60 +40,28 @@ export default {
       filterPriceTo: 0,
       filterCategoryId: 0,
       filterColorId: 0,
-      filterMemoryId: [],
 
       page: 1,
       productsPerPage: 6,
+
+      productsData: null,
+      productsLoading: false,
+      productsLoadingFailed: false,
     };
   },
   computed: {
-    filteredProducts() {
-      let filteredProducts = products;
-
-      if (this.filterPriceFrom > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.price > this.filterPriceFrom
-        );
-      }
-
-      if (this.filterPriceTo > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.price < this.filterPriceTo
-        );
-      }
-
-      if (this.filterCategoryId) {
-        filteredProducts = filteredProducts.filter(
-          (product) => product.categoryId === this.filterCategoryId
-        );
-      }
-
-      if (this.filterColorId > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) =>
-            product.colors &&
-            product.colors.some((item) => item.id === this.filterColorId)
-        );
-      }
-
-      if (this.filterMemoryId.length > 0) {
-        filteredProducts = filteredProducts.filter(
-          (product) =>
-            product.memories &&
-            product.memories.some((item) =>
-              this.filterMemoryId.includes(item.id)
-            )
-        );
-      }
-
-      return filteredProducts;
-    },
     products() {
-      const offset = (this.page - 1) * this.productsPerPage;
-      return this.filteredProducts.slice(offset, offset + this.productsPerPage);
+      return this.productsData
+        ? this.productsData.items.map((product) => {
+            return {
+              ...product,
+              image: product.image.file.url,
+            };
+          })
+        : [];
     },
     countProducts() {
-      return this.filteredProducts.length;
+      return this.productsData ? this.productsData.pagination.total : 0;
     },
     declOfProduct() {
       const decl = ["товар", "товара", "товаров"];
@@ -99,17 +69,70 @@ export default {
 
       return declOfNumber(quantity, decl);
     },
-    countProductsWithMemory() {
-      let productsWithMemory = [];
-
-      this.filteredProducts.filter((product) => {
-        if (product.memories) {
-          productsWithMemory.push(product.memories);
-        }
-      });
-
-      return productsWithMemory.length;
+  },
+  methods: {
+    loadProducts() {
+      this.productsLoading = true;
+      this.productsLoadingFailed = false;
+      // обертка setTimeout для того, чтобы был один запрос на сервер
+      // вместо кучи запросов для каждого свойства
+      clearTimeout(this.loadProductsTimer);
+      this.loadProductsTimer = setTimeout(() => {
+        axios
+          .get(API_BASE_URL + "/api/products", {
+            params: {
+              page: this.page,
+              limit: this.productsPerPage,
+              categoryId: this.filterCategoryId,
+              colorId: this.filterColorId,
+              minPrice: this.filterPriceFrom,
+              maxPrice: this.filterPriceTo,
+            },
+          })
+          .then((response) => (this.productsData = response.data))
+          .catch(() => (this.productsLoadingFailed = true))
+          .then(() => (this.productsLoading = false));
+      }, 1000);
     },
+  },
+  watch: {
+    page() {
+      this.loadProducts();
+    },
+    filterCategoryId() {
+      this.loadProducts();
+    },
+    filterPriceFrom() {
+      this.loadProducts();
+    },
+    filterPriceTo() {
+      this.loadProducts();
+    },
+    filterColorId() {
+      this.loadProducts();
+    },
+  },
+  created() {
+    this.loadProducts();
   },
 };
 </script>
+
+<style lang="scss">
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.error {
+  color: rgb(255, 0, 0);
+  .button--primery {
+    padding-left: 40px;
+    padding-right: 40px;
+    &:hover {
+      color: black;
+    }
+  }
+}
+</style>

@@ -41,7 +41,6 @@ import numberFormat from "@/helpers/filters/numberFormat";
 import declOfNumber from "@/helpers/declOfNumber";
 import { mapGetters } from "vuex";
 import CartItem from "@/components/CartItem.vue";
-import products from "../data/products";
 
 export default {
   filters: { numberFormat },
