@@ -34,7 +34,7 @@
       </button>
     </div>
 
-    <b class="product__price">{{ (item.amount * item.product.price) | numberFormat }} ₽</b>
+    <b class="product__price">{{ totalPrice | numberFormat }} ₽</b>
 
     <button
       class="product__del button-del"
@@ -68,11 +68,13 @@ export default {
         });
       },
     },
+    totalPrice() {
+      return this.item.amount * this.item.product.price;
+    },
   },
   methods: {
     ...mapMutations({
       deleteProduct: "deleteCartProduct",
-      incrementUp: "productAmountIncrementUp",
     }),
   },
 };

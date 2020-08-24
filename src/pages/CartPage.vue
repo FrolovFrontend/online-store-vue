@@ -42,6 +42,8 @@ import declOfNumber from "@/helpers/declOfNumber";
 import { mapGetters } from "vuex";
 import CartItem from "@/components/CartItem.vue";
 
+const DECLENSIONS = ["товар", "товара", "товаров"];
+
 export default {
   filters: { numberFormat },
   components: { CartItem },
@@ -53,10 +55,9 @@ export default {
       totalPrice: "cartTotalPrice",
     }),
     declOfProduct() {
-      const decl = ["товар", "товара", "товаров"];
       const quantity = this.products.length;
 
-      return declOfNumber(quantity, decl);
+      return declOfNumber(quantity, DECLENSIONS);
     },
   },
 };
