@@ -15,30 +15,6 @@ export default new Vuex.Store({
   },
   // мутации должны быть синхронные (обращаться к API нельзя)
   mutations: {
-    addProductToCart(state, payload) {
-      // переданные данные из метода addToCart() компонента ProductPage
-      // используется в обработчике мутации для изменения стейта хранилища
-      //
-      // в payload объект переданный в методе:
-      // { productId: this.product.id, amount: this.productAmount }
-      //
-      const item = state.cartProducts.find(
-        (item) => item.productId === payload.productId
-      );
-
-      // проверка на наличие товара в корзине(хранилище)
-      // если товар уже есть добавляется его количество
-      // иначе добавляется новый объект в состояние
-      //
-      if (item) {
-        item.amount += payload.amount;
-      } else {
-        state.cartProducts.push({
-          productId: payload.productId,
-          amount: payload.amount,
-        });
-      }
-    },
     updateCartProductAmount(state, { productId, amount }) {
       const item = state.cartProducts.find(
         (item) => item.productId === productId
@@ -48,11 +24,6 @@ export default new Vuex.Store({
         item.amount = amount;
       }
     },
-    deleteCartProduct(state, productId) {
-      state.cartProducts = state.cartProducts.filter(
-        (item) => item.productId !== productId
-      );
-    },
     updateUserAccessKey(state, accessKey) {
       state.userAccessKey = accessKey;
     },
@@ -61,10 +32,7 @@ export default new Vuex.Store({
     },
     syncCartProducts(state) {
       state.cartProducts = state.cartProductsData.map((item) => {
-        return {
-          productId: item.product.id,
-          amount: item.quantity,
-        };
+        return { productId: item.product.id, amount: item.quantity };
       });
     },
   },
@@ -78,10 +46,7 @@ export default new Vuex.Store({
 
         return {
           ...item,
-          product: {
-            ...product,
-            image: product.image.file.url,
-          },
+          product: { ...product, image: product.image.file.url },
         };
       });
     },
@@ -100,7 +65,7 @@ export default new Vuex.Store({
   actions: {
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
-      axios
+      return axios
         .get(API_BASE_URL + "/api/baskets", {
           params: {
             userAccessKey: context.state.userAccessKey,
@@ -111,6 +76,53 @@ export default new Vuex.Store({
             localStorage.setItem("userAccessKey", response.data.user.accessKey);
             context.commit("updateUserAccessKey", response.data.user.accessKey);
           }
+          context.commit("updateCartProductsData", response.data.items);
+          context.commit("syncCartProducts");
+        });
+    },
+    addProductToCart(context, { productId, amount }) {
+      return new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+        return axios
+          .post(
+            API_BASE_URL + "/api/baskets/products",
+            { productId: productId, quantity: amount },
+            { params: { userAccessKey: context.state.userAccessKey } }
+          )
+          .then((response) => {
+            context.commit("updateCartProductsData", response.data.items);
+            context.commit("syncCartProducts");
+          });
+      });
+    },
+    updateCartProductAmount(context, { productId, amount }) {
+      context.commit("updateCartProductAmount", { productId, amount });
+
+      if (amount < 1) {
+        return;
+      }
+
+      return axios
+        .put(
+          API_BASE_URL + "/api/baskets/products",
+          { productId: productId, quantity: amount },
+          { params: { userAccessKey: context.state.userAccessKey } }
+        )
+        .then((response) => {
+          context.commit("updateCartProductsData", response.data.items);
+        })
+        .catch(() => {
+          context.commit("syncCartProducts");
+        });
+    },
+    deleteCartProduct(context, { productId }) {
+      return axios
+        .delete(API_BASE_URL + "/api/baskets/products", {
+          productId: productId,
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
           context.commit("updateCartProductsData", response.data.items);
           context.commit("syncCartProducts");
         });

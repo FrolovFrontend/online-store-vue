@@ -91,15 +91,17 @@
                 <button
                   class="button button--primery"
                   type="submit"
-                  :disabled="productAmount < 1"
+                  :disabled="productAddSending"
                 >В корзину</button>
               </div>
+
+              <div v-show="productAdded">Товар добавлен в корзину</div>
+              <div v-show="productAddSending">Добавляем товар в корзину...</div>
             </form>
           </div>
         </div>
 
         <product-page-tabs />
-        
       </section>
     </main>
   </div>
@@ -110,6 +112,7 @@ import axios from "axios";
 import ProductPageTabs from "@/components/ProductPageTabs/ProductPageTabs.vue";
 import numberFormat from "@/helpers/filters/numberFormat";
 import { API_BASE_URL } from "@/config";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -118,6 +121,9 @@ export default {
       productData: null,
       productLoading: false,
       productLoadingFailed: false,
+
+      productAdded: false,
+      productAddSending: false,
     };
   },
   components: { ProductPageTabs },
@@ -136,13 +142,18 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["addProductToCart"]),
+
     addToCart() {
-      // для изменения данных в сторе, в методе нужно передать:
-      // this.$store.commit("Название мутации", {данные для обработчика})
-      //
-      this.$store.commit("addProductToCart", {
+      this.productAdded = false;
+      this.productAddSending = true;
+
+      this.addProductToCart({
         productId: this.product.id,
         amount: this.productAmount,
+      }).then(() => {
+        this.productAdded = true;
+        this.productAddSending = false;
       });
     },
     loadProduct() {
@@ -155,7 +166,7 @@ export default {
           .then((response) => (this.productData = response.data))
           .catch(() => (this.productLoadingFailed = true))
           .then(() => (this.productLoading = false));
-      }, 1000);
+      }, 500);
     },
   },
   watch: {
