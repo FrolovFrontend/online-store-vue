@@ -12,8 +12,8 @@
         :color-id.sync="filterColorId"
       />
       <section class="catalog">
-        <div class="loading" v-if="productsLoading">Загрузка товаров...</div>
-        <div class="error" v-if="productsLoadingFailed">
+        <base-preloader v-if="productsLoading" />
+        <div class="catalog__error" v-if="productsLoadingFailed">
           <p>Произошла ошибка при загрузке товаров</p>
           <button class="button button--primery" @click.prevent="loadProducts">Повторить загрузку</button>
         </div>
@@ -28,12 +28,13 @@
 import ProductList from "@/components/ProductList/ProductList.vue";
 import BasePagination from "@/components/BasePagination.vue";
 import ProductFilter from "@/components/ProductList/ProductFilter.vue";
+import BasePreloader from "@/components/BasePreloader.vue";
 import declOfNumber from "@/helpers/declOfNumber";
 import axios from "axios";
 import { API_BASE_URL } from "@/config";
 
 export default {
-  components: { ProductList, BasePagination, ProductFilter },
+  components: { ProductList, BasePagination, ProductFilter, BasePreloader },
   data() {
     return {
       filterPriceFrom: 0,
@@ -92,7 +93,7 @@ export default {
           .then((response) => (this.productsData = response.data))
           .catch(() => (this.productsLoadingFailed = true))
           .then(() => (this.productsLoading = false));
-      }, 1000);
+      }, 500);
     },
   },
   watch: {
@@ -119,13 +120,12 @@ export default {
 </script>
 
 <style lang="scss">
-.loading,
-.error {
+.catalog__error {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.error {
+.catalog__error {
   color: rgb(255, 0, 0);
   .button--primery {
     padding-left: 40px;

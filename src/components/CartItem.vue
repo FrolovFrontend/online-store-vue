@@ -51,7 +51,7 @@
 
 <script>
 import numberFormat from "@/helpers/filters/numberFormat";
-// import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 
 export default {
   props: ["item"],
@@ -73,13 +73,9 @@ export default {
     },
   },
   methods: {
-    // ...mapActions(["deleteCartProduct"]),
+    ...mapActions(["deleteCartProduct"]),
     deleteProduct() {
-      this.$store.dispatch("deleteCartProduct", {
-        productId: this.item.product.id,
-      });
-      // this.deleteCartProduct({ productId: this.item.product.id });
-      console.log(this.item.product.id);
+      this.deleteCartProduct({ productId: this.item.product.id });
     },
   },
 };

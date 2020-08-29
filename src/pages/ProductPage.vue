@@ -1,7 +1,9 @@
 <template>
   <div>
-    <main class="content container" v-if="productLoading">Загрузка товара...</main>
-    <main class="content container" v-else-if="!productData">
+    <main class="content preloader container" v-if="productLoading">
+      <base-preloader />
+    </main>
+    <main class="content product__error container" v-else-if="!productData">
       <p>Не удалось загрузить товар</p>
       <button class="button button--primery" @click.prevent="loadProduct">Повторить загрузку</button>
     </main>
@@ -92,11 +94,14 @@
                   class="button button--primery"
                   type="submit"
                   :disabled="productAddSending"
-                >В корзину</button>
+                >{{ buttonText }}</button>
               </div>
 
-              <div v-show="productAdded">Товар добавлен в корзину</div>
-              <div v-show="productAddSending">Добавляем товар в корзину...</div>
+              <div v-show="productAdded" class="product-added">
+                <div class="product-added__container">
+                  <span class="product-added__text">Товар добавлен в корзину</span>
+                </div>
+              </div>
             </form>
           </div>
         </div>
@@ -109,6 +114,7 @@
 
 <script>
 import axios from "axios";
+import BasePreloader from "@/components/BasePreloader.vue";
 import ProductPageTabs from "@/components/ProductPageTabs/ProductPageTabs.vue";
 import numberFormat from "@/helpers/filters/numberFormat";
 import { API_BASE_URL } from "@/config";
@@ -126,7 +132,7 @@ export default {
       productAddSending: false,
     };
   },
-  components: { ProductPageTabs },
+  components: { ProductPageTabs, BasePreloader },
   filters: {
     numberFormat,
   },
@@ -139,6 +145,9 @@ export default {
     },
     totalPrice() {
       return this.product.price * this.productAmount;
+    },
+    buttonText() {
+      return this.productAddSending ? "Добавление" : "В корзину";
     },
   },
   methods: {
@@ -159,6 +168,8 @@ export default {
     loadProduct() {
       this.productLoading = true;
       this.productLoadingFailed = false;
+      this.productAdded = false;
+
       clearTimeout(this.loadProductTimer);
       this.loadProductTimer = setTimeout(() => {
         axios
@@ -179,3 +190,50 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.preloader,
+.product__error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+.product__error {
+  p {
+    color: rgb(255, 0, 0);
+  }
+
+  .button--primery {
+    padding-left: 40px;
+    padding-right: 40px;
+    &:hover {
+      color: black;
+    }
+  }
+}
+.form {
+  position: relative;
+}
+.product-added {
+  position: absolute;
+  bottom: -36px;
+  &__text {
+    position: relative;
+    padding-left: 32px;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24px' viewBox='0 -36 509.248 509' width='24px'%3E%3Cpath d='m171.902344 438.074219-171.902344-171.902344 100.625-100.609375 71.277344 71.296875 236.722656-236.734375 100.621094 100.621094zm0 0' fill='%23addb31'/%3E%3C/svg%3E")
+        no-repeat;
+      background-size: contain;
+      left: 0;
+      top: -2px;
+    }
+  }
+}
+</style>

@@ -81,7 +81,7 @@ export default new Vuex.Store({
         });
     },
     addProductToCart(context, { productId, amount }) {
-      return new Promise((resolve) => setTimeout(resolve, 1500)).then(() => {
+      return new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
         return axios
           .post(
             API_BASE_URL + "/api/baskets/products",
