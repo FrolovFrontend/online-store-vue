@@ -51,7 +51,7 @@
 
 <script>
 import numberFormat from "@/helpers/filters/numberFormat";
-import { mapActions } from "vuex";
+// import { mapActions } from "vuex";
 
 export default {
   props: ["item"],
@@ -63,7 +63,7 @@ export default {
       },
       set(value) {
         this.$store.dispatch("updateCartProductAmount", {
-          productId: this.item.productId,
+          productId: this.item.product.id,
           amount: value,
         });
       },
@@ -73,10 +73,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["deleteCartProduct"]),
+    // ...mapActions(["deleteCartProduct"]),
     deleteProduct() {
-      this.deleteCartProduct({ productId: this.item.productId });
-      console.log(this.item.productId);
+      this.$store.dispatch("deleteCartProduct", {
+        productId: this.item.product.id,
+      });
+      // this.deleteCartProduct({ productId: this.item.product.id });
+      console.log(this.item.product.id);
     },
   },
 };
