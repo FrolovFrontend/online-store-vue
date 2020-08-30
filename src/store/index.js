@@ -12,6 +12,9 @@ export default new Vuex.Store({
     userAccessKey: null,
 
     cartProductsData: [],
+
+    cartLoading: false,
+    cartLoadingFailed: false,
   },
   // мутации должны быть синхронные (обращаться к API нельзя)
   mutations: {
@@ -65,20 +68,38 @@ export default new Vuex.Store({
   actions: {
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
-      return axios
-        .get(API_BASE_URL + "/api/baskets", {
-          params: {
-            userAccessKey: context.state.userAccessKey,
-          },
-        })
-        .then((response) => {
-          if (!context.state.userAccessKey) {
-            localStorage.setItem("userAccessKey", response.data.user.accessKey);
-            context.commit("updateUserAccessKey", response.data.user.accessKey);
-          }
-          context.commit("updateCartProductsData", response.data.items);
-          context.commit("syncCartProducts");
-        });
+      context.state.cartLoading = true;
+      context.state.cartLoadingFailed = false;
+
+      clearTimeout(this.loadCartTimer);
+      this.loadCartTimer = setTimeout(() => {
+        return axios
+          .get(API_BASE_URL + "/api/baskets", {
+            params: {
+              userAccessKey: context.state.userAccessKey,
+            },
+          })
+          .then((response) => {
+            if (!context.state.userAccessKey) {
+              localStorage.setItem(
+                "userAccessKey",
+                response.data.user.accessKey
+              );
+              context.commit(
+                "updateUserAccessKey",
+                response.data.user.accessKey
+              );
+            }
+            context.commit("updateCartProductsData", response.data.items);
+            context.commit("syncCartProducts");
+          })
+          .catch(() => {
+            context.state.cartLoadingFailed = true;
+          })
+          .then(() => {
+            context.state.cartLoading = false;
+          });
+      }, 500);
     },
     addProductToCart(context, { productId, amount }) {
       return new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
