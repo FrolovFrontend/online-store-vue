@@ -61,8 +61,8 @@ export default new Vuex.Store({
       return getters.cartDetailProducts.reduce(
         (acc, item) => item.product.price * item.amount + acc,
         0
-      );
-    },
+        );
+      },
   },
   // actions в отличае от мутаций могут выполнять асинхронные действия
   actions: {
@@ -70,11 +70,11 @@ export default new Vuex.Store({
       // контекст содержит теже методы что и глобальный экземпляр хранилища
       context.state.cartLoading = true;
       context.state.cartLoadingFailed = false;
-
+      
       clearTimeout(this.loadCartTimer);
       this.loadCartTimer = setTimeout(() => {
-        return axios
-          .get(API_BASE_URL + "/api/baskets", {
+      return axios
+      .get(API_BASE_URL + "/api/baskets", {
             params: {
               userAccessKey: context.state.userAccessKey,
             },

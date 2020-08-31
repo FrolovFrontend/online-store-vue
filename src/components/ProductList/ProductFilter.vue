@@ -87,8 +87,6 @@ export default {
     priceTo: Number,
     categoryId: Number,
     colorId: Number,
-    memoryId: Array,
-    productsWithMemory: Number,
   },
   watch: {
     priceFrom(value) {

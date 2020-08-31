@@ -1,24 +1,3 @@
-const COLOR_WHITE = '#fff';
-const COLOR_BLACK = '#000';
-const COLOR_BLUE = '#73B6EA';
-const COLOR_YELLOW = '#FFBE15';
-const COLOR_GRAY = '#939393';
-const COLOR_GREEN = '#8BE000';
-const COLOR_ORANGE = '#FF6B00';
+const DECLENSIONS_PRODUCT = ["товар", "товара", "товаров"];
 
-const MEMORY_32GB = '32GB';
-const MEMORY_64GB = '64GB';
-const MEMORY_128GB = '128GB';
-
-export {
-  COLOR_WHITE,
-  COLOR_BLACK,
-  COLOR_BLUE,
-  COLOR_YELLOW,
-  COLOR_GRAY,
-  COLOR_GREEN,
-  COLOR_ORANGE,
-  MEMORY_32GB,
-  MEMORY_64GB,
-  MEMORY_128GB,
-};
+export { DECLENSIONS_PRODUCT };

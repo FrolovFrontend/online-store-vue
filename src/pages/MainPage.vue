@@ -6,10 +6,10 @@
     </div>
     <div class="content__catalog">
       <product-filter
-        :price-from.sync="filterPriceFrom"
-        :price-to.sync="filterPriceTo"
-        :category-id.sync="filterCategoryId"
-        :color-id.sync="filterColorId"
+        :price-from.sync="filters.filterPriceFrom"
+        :price-to.sync="filters.filterPriceTo"
+        :category-id.sync="filters.filterCategoryId"
+        :color-id.sync="filters.filterColorId"
       />
       <section class="catalog">
         <base-preloader v-if="productsLoading" />
@@ -32,15 +32,18 @@ import BasePreloader from "@/components/BasePreloader.vue";
 import declOfNumber from "@/helpers/declOfNumber";
 import axios from "axios";
 import { API_BASE_URL } from "@/config";
+import { DECLENSIONS_PRODUCT } from "@/helpers/constans";
 
 export default {
   components: { ProductList, BasePagination, ProductFilter, BasePreloader },
   data() {
     return {
-      filterPriceFrom: 0,
-      filterPriceTo: 0,
-      filterCategoryId: 0,
-      filterColorId: 0,
+      filters: {
+        filterPriceFrom: 0,
+        filterPriceTo: 0,
+        filterCategoryId: 0,
+        filterColorId: 0,
+      },
 
       page: 1,
       productsPerPage: 6,
@@ -65,10 +68,9 @@ export default {
       return this.productsData ? this.productsData.pagination.total : 0;
     },
     declOfProduct() {
-      const decl = ["товар", "товара", "товаров"];
       const quantity = this.countProducts;
 
-      return declOfNumber(quantity, decl);
+      return declOfNumber(quantity, DECLENSIONS_PRODUCT);
     },
   },
   methods: {
@@ -84,10 +86,10 @@ export default {
             params: {
               page: this.page,
               limit: this.productsPerPage,
-              categoryId: this.filterCategoryId,
-              colorId: this.filterColorId,
-              minPrice: this.filterPriceFrom,
-              maxPrice: this.filterPriceTo,
+              categoryId: this.filters.filterCategoryId,
+              colorId: this.filters.filterColorId,
+              minPrice: this.filters.filterPriceFrom,
+              maxPrice: this.filters.filterPriceTo,
             },
           })
           .then((response) => (this.productsData = response.data))
@@ -100,17 +102,11 @@ export default {
     page() {
       this.loadProducts();
     },
-    filterCategoryId() {
-      this.loadProducts();
-    },
-    filterPriceFrom() {
-      this.loadProducts();
-    },
-    filterPriceTo() {
-      this.loadProducts();
-    },
-    filterColorId() {
-      this.loadProducts();
+    filters: {
+      handler(val, oldVal) {
+        this.loadProducts();
+      },
+      deep: true,
     },
   },
   created() {
