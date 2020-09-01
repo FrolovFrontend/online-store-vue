@@ -5,12 +5,7 @@
       <span class="content__info">{{ countProducts }} {{ declOfProduct }}</span>
     </div>
     <div class="content__catalog">
-      <product-filter
-        :price-from.sync="filters.filterPriceFrom"
-        :price-to.sync="filters.filterPriceTo"
-        :category-id.sync="filters.filterCategoryId"
-        :color-id.sync="filters.filterColorId"
-      />
+      <product-filter v-bind.sync="filters" />
       <section class="catalog">
         <base-preloader v-if="productsLoading" />
         <div class="catalog__error" v-if="productsLoadingFailed">
@@ -39,10 +34,10 @@ export default {
   data() {
     return {
       filters: {
-        filterPriceFrom: 0,
-        filterPriceTo: 0,
-        filterCategoryId: 0,
-        filterColorId: 0,
+        priceFrom: 0,
+        priceTo: 0,
+        categoryId: 0,
+        colorId: 0,
       },
 
       page: 1,
@@ -86,10 +81,10 @@ export default {
             params: {
               page: this.page,
               limit: this.productsPerPage,
-              categoryId: this.filters.filterCategoryId,
-              colorId: this.filters.filterColorId,
-              minPrice: this.filters.filterPriceFrom,
-              maxPrice: this.filters.filterPriceTo,
+              categoryId: this.filters.categoryId,
+              colorId: this.filters.colorId,
+              minPrice: this.filters.priceFrom,
+              maxPrice: this.filters.priceTo,
             },
           })
           .then((response) => (this.productsData = response.data))
