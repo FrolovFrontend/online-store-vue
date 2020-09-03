@@ -15,9 +15,18 @@ export default new Vuex.Store({
 
     cartLoading: false,
     cartLoadingFailed: false,
+
+    orderInfo: null,
   },
   // мутации должны быть синхронные (обращаться к API нельзя)
   mutations: {
+    updateOrderInfo(state, orderInfo) {
+      state.orderInfo = orderInfo;
+    },
+    resetCart(state) {
+      state.cartProducts = [];
+      state.cartProductsData = [];
+    },
     updateCartProductAmount(state, { productId, amount }) {
       const item = state.cartProducts.find(
         (item) => item.productId === productId
@@ -61,20 +70,31 @@ export default new Vuex.Store({
       return getters.cartDetailProducts.reduce(
         (acc, item) => item.product.price * item.amount + acc,
         0
-        );
-      },
+      );
+    },
   },
   // actions в отличае от мутаций могут выполнять асинхронные действия
   actions: {
+    loadOrderInfo(context, orderId) {
+      return axios
+        .get(API_BASE_URL + "/api/orders/" + orderId, {
+          params: {
+            userAccessKey: context.state.userAccessKey,
+          },
+        })
+        .then((response) => {
+          context.commit("updateOrderInfo", response.data);
+        });
+    },
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
       context.state.cartLoading = true;
       context.state.cartLoadingFailed = false;
-      
+
       clearTimeout(this.loadCartTimer);
       this.loadCartTimer = setTimeout(() => {
-      return axios
-      .get(API_BASE_URL + "/api/baskets", {
+        return axios
+          .get(API_BASE_URL + "/api/baskets", {
             params: {
               userAccessKey: context.state.userAccessKey,
             },

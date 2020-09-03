@@ -18,42 +18,42 @@
     </div>
 
     <section class="cart">
-      <form class="cart__form form" action="#" method="POST">
+      <form class="cart__form form" action="#" method="POST" @submit.prevent="order">
         <div class="cart__field">
           <div class="cart__data">
             <base-form-text
               v-model="formData.name"
-              :error="fromError.name"
+              :error="formError.name"
               title="ФИО"
               placeholder="Введите ваше полное имя"
             />
 
             <base-form-text
               v-model="formData.address"
-              :error="fromError.address"
+              :error="formError.address"
               title="Адрес доставки"
               placeholder="Введите ваше полное имя"
             />
 
             <base-form-text
               v-model="formData.phone"
-              :error="fromError.phone"
+              :error="formError.phone"
               title="Телефон"
               placeholder="Введите ваш телефон"
               type="tel"
             />
 
             <base-form-text
-              v-model="formData.mail"
-              :error="fromError.mail"
+              v-model="formData.email"
+              :error="formError.email"
               title="E-mail"
               placeholder="Введите ваш E-mail"
               type="email"
             />
 
             <base-form-textarea
-              v-model="formData.comments"
-              :error="fromError.comments"
+              v-model="formData.comment"
+              :error="formError.comment"
               title="Комментарий к заказу"
               placeholder="Ваши пожелания"
             />
@@ -140,9 +140,9 @@
           <button class="cart__button button button--primery" type="submit">Оформить заказ</button>
         </div>
 
-        <div class="cart__error form__error-block">
+        <div class="cart__error form__error-block" v-if="formErrorMessage">
           <h4>Заявка не отправлена!</h4>
-          <p>Похоже произошла ошибка. Попробуйте отправить снова или перезагрузите страницу.</p>
+          <p>{{ formErrorMessage }}</p>
         </div>
       </form>
     </section>
@@ -152,6 +152,8 @@
 <script>
 import BaseFormText from "@/components/BaseFormText.vue";
 import BaseFormTextarea from "@/components/BaseFormTextarea.vue";
+import axios from "axios";
+import { API_BASE_URL } from "@/config";
 
 export default {
   components: { BaseFormText, BaseFormTextarea },
@@ -162,10 +164,42 @@ export default {
         // при заполнении каждого конкретного поля
         // у которого есть v-model="formData.свойство"
       },
-      fromError: {
+      formError: {
         // аналогично для свойств v-if
       },
+      formErrorMessage: "",
     };
+  },
+  methods: {
+    order() {
+      this.formError = {};
+      this.formErrorMessage = "";
+
+      axios
+        .post(
+          API_BASE_URL + "/api/orders",
+          {
+            ...this.formData,
+          },
+          {
+            params: {
+              userAccessKey: this.$store.state.userAccessKey,
+            },
+          }
+        )
+        .then((response) => {
+          this.$store.commit("resetCart");
+          this.$store.commit("updateOrderInfo", response.data);
+          this.$router.push({
+            name: "orderInfo",
+            params: { id: response.data.id },
+          });
+        })
+        .catch((error) => {
+          this.formError = error.response.data.error.request || {};
+          this.formErrorMessage = error.response.data.error.message;
+        });
+    },
   },
 };
 </script>
