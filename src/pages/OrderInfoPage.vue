@@ -3,10 +3,10 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">Каталог</a>
+          <router-link class="breadcrumbs__link" :to="{name: 'main'}">Каталог</router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="cart.html">Корзина</a>
+          <router-link class="breadcrumbs__link" :to="{name: 'cart'}">Корзина</router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">Оформление заказа</a>
@@ -15,7 +15,7 @@
 
       <h1 class="content__title">
         Заказ оформлен
-        <span>№ 23621</span>
+        <span>№ {{ orderInfo.id }}</span>
       </h1>
     </div>
 
@@ -30,19 +30,23 @@
           <ul class="dictionary">
             <li class="dictionary__item">
               <span class="dictionary__key">Получатель</span>
-              <span class="dictionary__value">Иванова Василиса Алексеевна</span>
+              <span class="dictionary__value">{{ orderInfo.name }}</span>
             </li>
             <li class="dictionary__item">
               <span class="dictionary__key">Адрес доставки</span>
-              <span class="dictionary__value">Москва, ул. Ленина, 21, кв. 33</span>
+              <span class="dictionary__value">{{ orderInfo.address }}</span>
             </li>
             <li class="dictionary__item">
               <span class="dictionary__key">Телефон</span>
-              <span class="dictionary__value">8 800 989 74 84</span>
+              <span class="dictionary__value">{{ orderInfo.phone }}</span>
             </li>
             <li class="dictionary__item">
               <span class="dictionary__key">Email</span>
-              <span class="dictionary__value">lalala@mail.ru</span>
+              <span class="dictionary__value">{{ orderInfo.email }}</span>
+            </li>
+            <li class="dictionary__item">
+              <span class="dictionary__key">Статус заказа</span>
+              <span class="dictionary__value">{{ orderInfo.status.title }}</span>
             </li>
             <li class="dictionary__item">
               <span class="dictionary__key">Способ оплаты</span>
@@ -53,20 +57,19 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <li class="cart__order">
-              <h3>Смартфон Xiaomi Redmi Note 7 Pro 6/128GB</h3>
-              <b>18 990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Гироскутер Razor Hovertrax 2.0ii</h3>
-              <b>4 990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Электрический дрифт-карт Razor Lil’ Crazy</h3>
-              <b>8 990 ₽</b>
-              <span>Артикул: 150030</span>
+            <li
+              class="cart__order"
+              v-for="product in orderInfo.basket.items"
+              :key="product.product.id"
+            >
+              <h3>
+                {{ product.product.title }}
+                <span
+                  v-if="product.quantity > 1"
+                >({{ product.quantity }} шт.)</span>
+              </h3>
+              <b>{{ (product.product.price * product.quantity) | numberFormat }} ₽</b>
+              <span>Артикул: {{ product.product.id }}</span>
             </li>
           </ul>
 
@@ -77,8 +80,8 @@
             </p>
             <p>
               Итого:
-              <b>3</b> товара на сумму
-              <b>37 970 ₽</b>
+              <b>{{ orderInfo.basket.items.length }}</b> {{ declOfProduct }} на сумму
+              <b>{{orderInfo.totalPrice | numberFormat}} ₽</b>
             </p>
           </div>
         </div>
@@ -88,7 +91,22 @@
 </template>
 
 <script>
+import { DECLENSIONS_PRODUCT } from "@/helpers/constans";
+import declOfNumber from "@/helpers/declOfNumber";
+import numberFormat from "@/helpers/filters/numberFormat";
+
 export default {
+  filters: { numberFormat },
+  computed: {
+    orderInfo() {
+      return this.$store.state.orderInfo;
+    },
+    declOfProduct() {
+      const quantity = this.orderInfo.basket.items.length;
+
+      return declOfNumber(quantity, DECLENSIONS_PRODUCT);
+    },
+  },
   created() {
     if (
       this.$store.state.orderInfo &&

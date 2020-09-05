@@ -22,7 +22,18 @@
         </ul>
 
         <h1 class="content__title">Корзина</h1>
-        <span class="content__info">{{ products.length }} {{ declOfProduct }}</span>
+        <span
+          class="content__info"
+          v-if="products.length > 0"
+        >{{ products.length }} {{ declOfProduct }}</span>
+        <div v-else class="content-info">
+          <span class="content__info">Чтобы оформить заказ, в корзине должен быть хотя бы 1 товар</span>
+          <router-link
+            tag="button"
+            :to="{name: 'main'}"
+            class="content-info__button button button--primery"
+          >Перейти в каталог</router-link>
+        </div>
       </div>
 
       <section class="cart">
@@ -45,6 +56,7 @@
               :to="{name: 'order'}"
               class="cart__button button button--primery"
               type="submit"
+              :disabled="products.length === 0"
             >Оформить заказ</router-link>
           </div>
         </form>
@@ -81,6 +93,19 @@ export default {
 </script>
 
 <style lang="scss">
+.content-info {
+  display: flex;
+  flex-direction: column;
+
+  &__button {
+    margin-top: 24px;
+    max-width: 300px;
+
+    &:not(:disabled):hover {
+      color: #222;
+    }
+  }
+}
 .cart__error {
   display: flex;
   flex-direction: column;

@@ -3,10 +3,10 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">Каталог</a>
+          <router-link class="breadcrumbs__link" :to="{name: 'main'}">Каталог</router-link>
         </li>
         <li class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="cart.html">Корзина</a>
+          <router-link class="breadcrumbs__link" :to="{name: 'cart'}">Корзина</router-link>
         </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">Оформление заказа</a>
@@ -14,7 +14,7 @@
       </ul>
 
       <h1 class="content__title">Корзина</h1>
-      <span class="content__info">3 товара</span>
+      <span class="content__info">{{ products.length }} {{ declOfProduct }}</span>
     </div>
 
     <section class="cart">
@@ -26,6 +26,7 @@
               :error="formError.name"
               title="ФИО"
               placeholder="Введите ваше полное имя"
+              name="name"
             />
 
             <base-form-text
@@ -33,6 +34,7 @@
               :error="formError.address"
               title="Адрес доставки"
               placeholder="Введите ваше полное имя"
+              name="address"
             />
 
             <base-form-text
@@ -108,20 +110,13 @@
 
         <div class="cart__block">
           <ul class="cart__orders">
-            <li class="cart__order">
-              <h3>Смартфон Xiaomi Redmi Note 7 Pro 6/128GB</h3>
-              <b>18 990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Гироскутер Razor Hovertrax 2.0ii</h3>
-              <b>4 990 ₽</b>
-              <span>Артикул: 150030</span>
-            </li>
-            <li class="cart__order">
-              <h3>Электрический дрифт-карт Razor Lil’ Crazy</h3>
-              <b>8 990 ₽</b>
-              <span>Артикул: 150030</span>
+            <li class="cart__order" v-for="product in products" :key="product.product.id">
+              <h3>
+                {{ product.product.title }}
+                <span v-if="product.amount > 1">({{ product.amount | numberFormat }} шт.)</span>
+              </h3>
+              <b>{{(product.product.price * product.amount) | numberFormat}} ₽</b>
+              <span>Артикул: {{ product.product.id }}</span>
             </li>
           </ul>
 
@@ -132,8 +127,8 @@
             </p>
             <p>
               Итого:
-              <b>3</b> товара на сумму
-              <b>37 970 ₽</b>
+              <b>{{ products.length }}</b> {{ declOfProduct }} на сумму
+              <b>{{ totalPrice | numberFormat }} ₽</b>
             </p>
           </div>
 
@@ -154,6 +149,10 @@ import BaseFormText from "@/components/BaseFormText.vue";
 import BaseFormTextarea from "@/components/BaseFormTextarea.vue";
 import axios from "axios";
 import { API_BASE_URL } from "@/config";
+import { mapGetters } from "vuex";
+import { DECLENSIONS_PRODUCT } from "@/helpers/constans";
+import declOfNumber from "@/helpers/declOfNumber";
+import numberFormat from "@/helpers/filters/numberFormat";
 
 export default {
   components: { BaseFormText, BaseFormTextarea },
@@ -169,6 +168,18 @@ export default {
       },
       formErrorMessage: "",
     };
+  },
+  filters: { numberFormat },
+  computed: {
+    ...mapGetters({
+      products: "cartDetailProducts",
+      totalPrice: "cartTotalPrice",
+    }),
+    declOfProduct() {
+      const quantity = this.products.length;
+
+      return declOfNumber(quantity, DECLENSIONS_PRODUCT);
+    },
   },
   methods: {
     order() {
