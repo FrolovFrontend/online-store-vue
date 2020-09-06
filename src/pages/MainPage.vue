@@ -7,11 +7,11 @@
     <div class="content__catalog">
       <product-filter v-bind.sync="filters" />
       <section class="catalog">
-        <base-preloader v-if="productsLoading" />
-        <div class="catalog__error" v-if="productsLoadingFailed">
+        <base-preloader v-if="$store.state.loading" />
+        <!-- <div class="catalog__error" v-if="productsLoadingFailed">
           <p>Произошла ошибка при загрузке товаров</p>
           <button class="button button--primery" @click.prevent="loadProducts">Повторить загрузку</button>
-        </div>
+        </div> -->
         <product-list :products="products" />
         <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
@@ -43,15 +43,15 @@ export default {
       page: 1,
       productsPerPage: 6,
 
-      productsData: null,
-      productsLoading: false,
-      productsLoadingFailed: false,
+      // productsLoadingFailed: false,
     };
   },
   computed: {
     products() {
-      return this.productsData
-        ? this.productsData.items.map((product) => {
+      const data = this.$store.state.products;
+
+      return data
+        ? data.items.map((product) => {
             return {
               ...product,
               image: product.image.file.url,
@@ -60,7 +60,9 @@ export default {
         : [];
     },
     countProducts() {
-      return this.productsData ? this.productsData.pagination.total : 0;
+      return this.$store.state.products
+        ? this.$store.state.products.pagination.total
+        : 0;
     },
     declOfProduct() {
       const quantity = this.countProducts;
@@ -70,27 +72,16 @@ export default {
   },
   methods: {
     loadProducts() {
-      this.productsLoading = true;
-      this.productsLoadingFailed = false;
-      // обертка setTimeout для того, чтобы был один запрос на сервер
-      // вместо кучи запросов для каждого свойства
-      clearTimeout(this.loadProductsTimer);
-      this.loadProductsTimer = setTimeout(() => {
-        axios
-          .get(API_BASE_URL + "/api/products", {
-            params: {
-              page: this.page,
-              limit: this.productsPerPage,
-              categoryId: this.filters.categoryId,
-              colorId: this.filters.colorId,
-              minPrice: this.filters.priceFrom,
-              maxPrice: this.filters.priceTo,
-            },
-          })
-          .then((response) => (this.productsData = response.data))
-          .catch(() => (this.productsLoadingFailed = true))
-          .then(() => (this.productsLoading = false));
-      }, 500);
+      const params = {
+        page: this.page,
+        limit: this.productsPerPage,
+        categoryId: this.filters.categoryId,
+        colorId: this.filters.colorId,
+        minPrice: this.filters.priceFrom,
+        maxPrice: this.filters.priceTo,
+      };
+
+      this.$store.dispatch("loadProducts", params);
     },
   },
   watch: {

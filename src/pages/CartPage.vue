@@ -1,6 +1,6 @@
 <template>
   <div>
-    <main class="content container preloader" v-if="$store.state.cartLoading">
+    <main class="content container preloader" v-if="$store.state.loading">
       <base-preloader />
     </main>
     <main class="content cart__error container" v-else-if="$store.state.cartLoadingFailed">

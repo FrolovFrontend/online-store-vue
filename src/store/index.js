@@ -7,19 +7,19 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    products: null,
     cartProducts: [],
-
     userAccessKey: null,
-
     cartProductsData: [],
-
-    cartLoading: false,
     cartLoadingFailed: false,
-
     orderInfo: null,
+    loading: false,
   },
   // мутации должны быть синхронные (обращаться к API нельзя)
   mutations: {
+    setProducts(state, products) {
+      state.products = products;
+    },
     updateOrderInfo(state, orderInfo) {
       state.orderInfo = orderInfo;
     },
@@ -86,9 +86,25 @@ export default new Vuex.Store({
           context.commit("updateOrderInfo", response.data);
         });
     },
+    loadProducts(context, params) {
+      context.state.products = null;
+      context.state.loading = true;
+
+      clearTimeout(this.loadProductsTimer);
+      this.loadProductsTimer = setTimeout(() => {
+        return axios
+          .get(API_BASE_URL + "/api/products", { params: params })
+          .then((response) => {
+            context.commit("setProducts", response.data);
+          })
+          .then(() => {
+            context.state.loading = false;
+          });
+      }, 500);
+    },
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
-      context.state.cartLoading = true;
+      context.state.loading = true;
       context.state.cartLoadingFailed = false;
 
       clearTimeout(this.loadCartTimer);
@@ -117,7 +133,7 @@ export default new Vuex.Store({
             context.state.cartLoadingFailed = true;
           })
           .then(() => {
-            context.state.cartLoading = false;
+            context.state.loading = false;
           });
       }, 500);
     },
