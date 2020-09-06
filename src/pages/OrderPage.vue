@@ -113,7 +113,9 @@
             <li class="cart__order" v-for="product in products" :key="product.product.id">
               <h3>
                 {{ product.product.title }}
-                <span v-if="product.amount > 1">({{ product.amount | numberFormat }} шт.)</span>
+                <span
+                  v-if="product.amount > 1"
+                >({{ product.amount | numberFormat }} шт.)</span>
               </h3>
               <b>{{(product.product.price * product.amount) | numberFormat}} ₽</b>
               <span>Артикул: {{ product.product.id }}</span>
@@ -127,12 +129,13 @@
             </p>
             <p>
               Итого:
-              <b>{{ products.length }}</b> {{ declOfProduct }} на сумму
+              <b>{{ products.length }}</b>
+              {{ declOfProduct }} на сумму
               <b>{{ totalPrice | numberFormat }} ₽</b>
             </p>
           </div>
 
-          <button class="cart__button button button--primery" type="submit">Оформить заказ</button>
+          <button class="cart__button button button--primery" type="submit">{{ buttonText }}</button>
         </div>
 
         <div class="cart__error form__error-block" v-if="formErrorMessage">
@@ -167,6 +170,8 @@ export default {
         // аналогично для свойств v-if
       },
       formErrorMessage: "",
+
+      orderSending: false,
     };
   },
   filters: { numberFormat },
@@ -180,36 +185,46 @@ export default {
 
       return declOfNumber(quantity, DECLENSIONS_PRODUCT);
     },
+    buttonText() {
+      return this.orderSending ? "Оформление" : "Оформить заказ";
+    },
   },
   methods: {
     order() {
       this.formError = {};
       this.formErrorMessage = "";
+      this.orderSending = true;
 
-      axios
-        .post(
-          API_BASE_URL + "/api/orders",
-          {
-            ...this.formData,
-          },
-          {
-            params: {
-              userAccessKey: this.$store.state.userAccessKey,
+      clearTimeout(this.orderTimer);
+      this.orderTimer = setTimeout(() => {
+        axios
+          .post(
+            API_BASE_URL + "/api/orders",
+            {
+              ...this.formData,
             },
-          }
-        )
-        .then((response) => {
-          this.$store.commit("resetCart");
-          this.$store.commit("updateOrderInfo", response.data);
-          this.$router.push({
-            name: "orderInfo",
-            params: { id: response.data.id },
+            {
+              params: {
+                userAccessKey: this.$store.state.userAccessKey,
+              },
+            }
+          )
+          .then((response) => {
+            this.$store.commit("resetCart");
+            this.$store.commit("updateOrderInfo", response.data);
+            this.$router.push({
+              name: "orderInfo",
+              params: { id: response.data.id },
+            });
+          })
+          .catch((error) => {
+            this.formErrorMessage = error.response.data.error.message;
+            this.formError = error.response.data.error.request || {};
+          })
+          .then(() => {
+            this.orderSending = false;
           });
-        })
-        .catch((error) => {
-          this.formError = error.response.data.error.request || {};
-          this.formErrorMessage = error.response.data.error.message;
-        });
+      }, 500);
     },
   },
 };

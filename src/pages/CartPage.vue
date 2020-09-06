@@ -3,7 +3,7 @@
     <main class="content container preloader" v-if="$store.state.loading">
       <base-preloader />
     </main>
-    <main class="content cart__error container" v-else-if="$store.state.cartLoadingFailed">
+    <main class="content cartpage__error container" v-else-if="$store.state.cartLoadingFailed">
       <p>Не удалось загрузить корзину</p>
       <button
         class="button button--primery"
@@ -44,7 +44,7 @@
             </ul>
           </div>
 
-          <div class="cart__block">
+          <div class="cart__block"  v-show="products.length > 0">
             <p class="cart__desc">Мы&nbsp;посчитаем стоимость доставки на&nbsp;следующем этапе</p>
             <p class="cart__price">
               Итого:
@@ -56,7 +56,6 @@
               :to="{name: 'order'}"
               class="cart__button button button--primery"
               type="submit"
-              :disabled="products.length === 0"
             >Оформить заказ</router-link>
           </div>
         </form>
@@ -106,14 +105,14 @@ export default {
     }
   }
 }
-.cart__error {
+.cartpage__error {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
 }
-.cart__error {
+.cartpage__error {
   p {
     color: rgb(255, 0, 0);
   }
