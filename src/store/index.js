@@ -21,6 +21,21 @@ export default new Vuex.Store({
     setProducts(state, products) {
       state.products = products;
     },
+    resetProducts(state) {
+      state.products = null;
+    },
+    setLoadingTrue(state) {
+      state.loading = true;
+    },
+    setLoadingFalse(state) {
+      state.loading = false;
+    },
+    setErrorTrue(state) {
+      state.error = true;
+    },
+    setErrorFalse(state) {
+      state.error = false;
+    },
     updateOrderInfo(state, orderInfo) {
       state.orderInfo = orderInfo;
     },
@@ -88,9 +103,9 @@ export default new Vuex.Store({
         });
     },
     loadProducts(context, params) {
-      context.state.products = null;
-      context.state.loading = true;
-      context.state.error = false;
+      context.commit("resetProducts");
+      context.commit("setLoadingTrue");
+      context.commit("setErrorFalse");
 
       clearTimeout(this.loadProductsTimer);
       this.loadProductsTimer = setTimeout(() => {
@@ -100,17 +115,17 @@ export default new Vuex.Store({
             context.commit("setProducts", response.data);
           })
           .catch(() => {
-            context.state.error = true;
+            context.commit("setErrorTrue");
           })
           .then(() => {
-            context.state.loading = false;
+            context.commit("setLoadingFalse");
           });
       }, 500);
     },
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
-      context.state.loading = true;
-      context.state.error = false;
+      context.commit("setLoadingTrue");
+      context.commit("setErrorFalse");
 
       clearTimeout(this.loadCartTimer);
       this.loadCartTimer = setTimeout(() => {
@@ -135,10 +150,10 @@ export default new Vuex.Store({
             context.commit("syncCartProducts");
           })
           .catch(() => {
-            context.state.error = true;
+            context.commit("setErrorTrue");
           })
           .then(() => {
-            context.state.loading = false;
+            context.commit("setLoadingFalse");
           });
       }, 500);
     },
