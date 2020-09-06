@@ -3,7 +3,7 @@
     <main class="content container preloader" v-if="$store.state.loading">
       <base-preloader />
     </main>
-    <main class="content cartpage__error container" v-else-if="$store.state.cartLoadingFailed">
+    <main class="content cartpage__error container" v-else-if="$store.state.error">
       <p>Не удалось загрузить корзину</p>
       <button
         class="button button--primery"

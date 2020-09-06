@@ -14,6 +14,7 @@ export default new Vuex.Store({
     cartLoadingFailed: false,
     orderInfo: null,
     loading: false,
+    error: false,
   },
   // мутации должны быть синхронные (обращаться к API нельзя)
   mutations: {
@@ -89,6 +90,7 @@ export default new Vuex.Store({
     loadProducts(context, params) {
       context.state.products = null;
       context.state.loading = true;
+      context.state.error = false;
 
       clearTimeout(this.loadProductsTimer);
       this.loadProductsTimer = setTimeout(() => {
@@ -96,6 +98,9 @@ export default new Vuex.Store({
           .get(API_BASE_URL + "/api/products", { params: params })
           .then((response) => {
             context.commit("setProducts", response.data);
+          })
+          .catch(() => {
+            context.state.error = true;
           })
           .then(() => {
             context.state.loading = false;
@@ -105,7 +110,7 @@ export default new Vuex.Store({
     loadCart(context) {
       // контекст содержит теже методы что и глобальный экземпляр хранилища
       context.state.loading = true;
-      context.state.cartLoadingFailed = false;
+      context.state.error = false;
 
       clearTimeout(this.loadCartTimer);
       this.loadCartTimer = setTimeout(() => {
@@ -130,7 +135,7 @@ export default new Vuex.Store({
             context.commit("syncCartProducts");
           })
           .catch(() => {
-            context.state.cartLoadingFailed = true;
+            context.state.error = true;
           })
           .then(() => {
             context.state.loading = false;

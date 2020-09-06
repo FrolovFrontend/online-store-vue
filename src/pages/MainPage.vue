@@ -8,10 +8,10 @@
       <product-filter v-bind.sync="filters" />
       <section class="catalog">
         <base-preloader v-if="$store.state.loading" />
-        <!-- <div class="catalog__error" v-if="productsLoadingFailed">
+        <div class="catalog__error" v-if="$store.state.error">
           <p>Произошла ошибка при загрузке товаров</p>
           <button class="button button--primery" @click.prevent="loadProducts">Повторить загрузку</button>
-        </div> -->
+        </div>
         <product-list :products="products" />
         <base-pagination v-model="page" :count="countProducts" :per-page="productsPerPage" />
       </section>
@@ -42,8 +42,6 @@ export default {
 
       page: 1,
       productsPerPage: 6,
-
-      // productsLoadingFailed: false,
     };
   },
   computed: {
